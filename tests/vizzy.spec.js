@@ -1,25 +1,40 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '@playwright/test'; // Ensure this is imported only once
+import { headerLocators, heroSectionLocators, exampleProfileLocators, footerLocators, expectedProfiles } from './locator/landingPage.js';
 
-test('Vizzy unauthorized landing page', async ({page})=>{
-
-  //locator of all the element;
-  //header
-    const vizzyLogo = await page.locator('span.Nav_logo__au6jc');
-    const vizzyForBusiness = await page.locator('.DesktopView_desktopOnly___ZyYW > a:nth-child(1)');
-    const loginButton = await page.locator('button.Button_reverseTertiary__IoEZ6');
-  
-  //hero section
-    const heroTitle = await page.locator('h1.LandingPage_heading__4jC4e');
-    const heroDescription = await page.locator('.LandingPage_textContent__7E7m9 > p:nth-child(2)');
-    const heroImage = await page.locator('.LandingPage_mediaContent__yxN4A > img:nth-child(1)');
-    const heroCreateProfileButton = await page.locator('.LandingPage_anchorButton__QzsUQ');
-    const heroWatchOurVideoButton = await page.locator('button.Button_variantRegularLightBackground__h8TWQ:nth-child(1)');
-    const heroPizzaExpressLogo = await page.locator('div.UsedBySection_logo__vtF0y:nth-child(1) > img:nth-child(1)');
-    const heroTiffanyLogo = await page.locator('div.UsedBySection_logo__vtF0y:nth-child(2) > img:nth-child(1)');
-    const heroLouisVuittonLogo = await page.locator('div.UsedBySection_logo__vtF0y:nth-child(3) > img:nth-child(1)');
-    const heroBurberryLogo = await page.locator('div.UsedBySection_logo__vtF0y:nth-child(4) > img:nth-child(1)');
-
+test('Vizzy unauthorized landing page', async ({ page }) => {
+  const header = await headerLocators(page);
+  const heroSection = await heroSectionLocators(page);
+  const exampleProfiles = await exampleProfileLocators(page);
+  const footer = await footerLocators(page);
 
   await page.goto('https://staging.vizzy.com/');
+
+  // header
+  await expect.soft(header.vizzyLogo).toBeVisible();
+  await expect.soft(header.vizzyForBusiness).toBeVisible();
+  await expect.soft(header.loginButton).toBeVisible();
+
+  //hero section
+  await expect.soft(heroSection.heroTitle).toBeVisible();
+  await expect.soft(heroSection.heroDescription).toHaveText('Create your Vizzy to stand out in job applications or as a personal portfolio and show the world who you are and everything you can do.');
+  await expect.soft(heroSection.heroImage).toBeVisible();
+  await expect.soft(heroSection.heroCreateProfileButton).toBeVisible();
+  await expect.soft(heroSection.heroWatchOurVideoButton).toBeVisible();
+  await expect.soft(heroSection.heroPizzaExpressLogo).toBeVisible();
+  await expect.soft(heroSection.heroTiffanyLogo).toBeVisible();
+  await expect.soft(heroSection.heroLouisVuittonLogo).toBeVisible();
+  await expect.soft(heroSection.heroBurberryLogo).toBeVisible();
+  await expect.soft(heroSection.heroOctopusLogo).toBeVisible();
+  await expect.soft(heroSection.heroFlodeskLogo).toBeVisible();
+  // Iterating through example profiles
+
+  for (let i = 0; i < exampleProfiles.length; i++) { 
+    const profile = exampleProfiles[i]; 
+    const expectedProfile = expectedProfiles[i];
+    await expect.soft(profile.name).toHaveText(expectedProfile.name);
+    await expect.soft(profile.description).toHaveText(expectedProfile.description); 
+    await expect.soft(profile.image).toBeVisible(); 
+    await expect.soft(profile.visitProfileLink).toBeVisible(); 
+  }
   
 });
