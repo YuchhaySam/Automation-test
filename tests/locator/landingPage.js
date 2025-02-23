@@ -5,8 +5,29 @@ export const headerLocators = async (page) => ({
   vizzyLogo: await page.locator('span.Nav_logo__au6jc'),
   vizzyForBusiness: await page.locator('.DesktopView_desktopOnly___ZyYW > a:nth-child(1)'),
   loginButton: await page.locator('button.Button_reverseTertiary__IoEZ6'),
-  
+  signUpButton : await page.locator(`//button[normalize-space()='Create your free profile']`)
 });
+
+export const signUpFieldsLocators = async (page) => ({
+  firstNameField : await page.locator(`//input[@name='firstName']`),
+  lastNameField : await page.locator(`//input[@name='lastName']`),
+  emailField : await page.locator(`//input[@name='email']`),
+  passwordField : await page.locator(`//input[@name='password']`),
+  registerButton: await page.locator(`//button[@type='submit']`),
+  verificationCodeInputField : await page.locator(`//input[@placeholder='label_placeholder_passcode']`),
+  continueButton: await page.locator(`//button[normalize-space()='Continue']`),
+  bespokenInputField : await page.locator(`//div[@class='FormFields_inputContainer__EA8IU']//input`)
+});
+
+export const mailinatorLocators = async (page) => {
+  const iframe = await page.frameLocator('iframe[name="html_msg_body"]'); // Adjust the selector to match the correct iframe
+  return {
+    emailInputField: await page.locator(`//input[@id='search']`),
+    verificationInbox: await page.locator(`//td[contains(text(),'Vizzy: Please verify your email ⚡')]`),
+    codelocator: await iframe.locator('tbody tr h2:nth-child(1)')
+  };
+};
+
 
 export const heroSectionLocators = async (page) => ({
   heroTitle: await page.locator('h1.LandingPage_heading__4jC4e'),
