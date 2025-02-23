@@ -49,17 +49,8 @@ test('Sign up page', async () => {
   const emailContent = await mailinatorField.codelocator.textContent();
   console.log('Email content:', emailContent);
 
-  // Extract the verification code using a regular expression
-  const verificationCodeMatch = emailContent.match(/(\d{6})/); // Adjust the regex to match your verification code format
-  const verificationCode = verificationCodeMatch ? verificationCodeMatch[0] : null;
-  console.log('Verification code:', verificationCode);
-
-  if (!verificationCode) {
-    throw new Error('Verification code not found in the email content');
-  }
-
   // Go back to Vizzy and complete the sign-up process
-  await signUpField.verificationCodeInputField.fill(verificationCode);
+  await signUpField.verificationCodeInputField.fill(emailContent);
   await signUpField.continueButton.click();
 
   // Expect to see the bespoke input field
