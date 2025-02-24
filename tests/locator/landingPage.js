@@ -1,11 +1,20 @@
 // landingPage.mjs
 
+import { sign } from "crypto";
+
 // Exporting all locator functions
 export const headerLocators = async (page) => ({
   vizzyLogo: await page.locator('span.Nav_logo__au6jc'),
   vizzyForBusiness: await page.locator('.DesktopView_desktopOnly___ZyYW > a:nth-child(1)'),
   loginButton: await page.locator('button.Button_reverseTertiary__IoEZ6'),
-  signUpButton : await page.locator(`//button[normalize-space()='Create your free profile']`)
+  signUpButton : await page.locator(`//button[normalize-space()='Create your free profile']`),
+  vizzyLogo : await page.locator(`//div[@class='Nav_blurredBackground__dC9BO']`)
+});
+
+export const signInFieldLocator = async (page) => ({
+  emailField: await page.locator(`//input[@name='email']`),
+  passwordField: await page.locator(`//input[@name='password']`),
+  signInButton: await page.locator(`//button[@type='submit']`)
 });
 
 export const signUpFieldsLocators = async (page) => ({

@@ -1,6 +1,6 @@
 import { test, expect, chromium } from '@playwright/test';
 import { headerLocators, signUpFieldsLocators, mailinatorLocators } from './locator/landingPage.js';
-import { autoGenerationSignup } from './locator/autoGenerationSignup.js';
+import { autoGenerationSignup } from './ulti-function/autoGenerationSignup.js';
 
 test('Sign up page', async () => {
   const browser = await chromium.launch({ headless: false }); // Launch Chrome (Chromium)
