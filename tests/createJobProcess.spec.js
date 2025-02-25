@@ -3,10 +3,9 @@ import {test, expect, chromium} from '@playwright/test';
 import * as landingPage from './locator/landingPage.js';
 import * as data from './test-data/data.js';
 import * as setting from './locator/settingLocator.js';
-import { autoGenerationCreateJob } from './ulti-function/generateNameForJob.js';
+import { autoGenerationCreateJob, answerCreationLoop, checkIfTheSaveIsSuccess } from './ulti-function/generateNameForJob.js';
 import dayjs from "dayjs";
 import { create } from 'domain';
-
 
 
 test('Create a job process', async ({page}) => {
@@ -16,6 +15,7 @@ test('Create a job process', async ({page}) => {
   const settingPage = await setting.settingLocator(page);
   const createAndManageJobPage = await setting.createJobForm(page);
   const createAndManageJob = await setting.createAndManageJob(page);
+  
 
   //dayjs 
   let today = dayjs().format('DD/MM/YYYY');
@@ -50,7 +50,7 @@ test('Create a job process', async ({page}) => {
   console.log('create a new job');
 
   // Job detail
-  // Fill in non-required fields
+  await expect(createAndManageJobPage.jobDetailCopy).toHaveText(data.copy.jobDetailCopy);
   await createAndManageJobPage.jobTitle.fill(jobName);
   console.log('Job name:', jobName);
   await createAndManageJobPage.jobCode.fill(code);
@@ -96,9 +96,39 @@ test('Create a job process', async ({page}) => {
   await page.waitForTimeout(5000);
 
 
-  //check if the save is success
-  let isSaveButtonDisabled = await createAndManageJobPage.jobDetailSaveButton.isDisabled();
-  console.log('Save button is disabled initially:', isSaveButtonDisabled);
-  expect(isSaveButtonDisabled).toBe(true);
-  console.log('save success');
+  //create a new group
+  await createAndManageJobPage.groupsJob.groupJobTab.click();
+  await expect(createAndManageJobPage.groupsJob.groupJobCopy).toHaveText(data.copy.groupJobCopy);
+  await createAndManageJobPage.groupsJob.groupJobDropDownContainer.click();
+  await createAndManageJobPage.groupsJob.createNewGroupButton.click();
+  await createAndManageJobPage.groupsJob.newGroup.groupTitle.fill('Automation');
+  await createAndManageJobPage.groupsJob.newGroup.groupDescription.fill('This is an automation group');
+  await createAndManageJobPage.groupsJob.saveButton.click();
+
+  //check if the group is created successfully
+  await createAndManageJobPage.sucessMessage.waitFor({ state: 'visible' });
+  expect(await createAndManageJobPage.sucessMessage.isVisible()).toBe(true);
+  console.log('Group created successfully');
+
+  //pre-requiste questions creation
+  await createAndManageJobPage.prerequsiteAndEDITab.click();
+  await expect(createAndManageJobPage.prerequisiteQuestion.prerequisteCopy).toHaveText(data.copy.prerequisteCopy);
+  //add question with no multi answers
+  await createAndManageJobPage.prerequisiteQuestion.addQuestionButton.click();
+  // Verify if the toggle is enabled or disabled
+  const isToggleEnabled = await createAndManageJobPage.prerequisiteQuestion.multipleQuestionToggle.isChecked();
+  expect(isToggleEnabled).toBe(false); 
+  await createAndManageJobPage.prerequisiteQuestion.questionField.fill('automation questions');
+  await answerCreationLoop(createAndManageJobPage);
+  await createAndManageJobPage.prerequisiteQuestion.saveQuestionButton.click();
+  //add question with multi answers
+  await createAndManageJobPage.prerequisiteQuestion.addQuestionButton.click();
+  // Verify if the toggle is enabled or disabled
+  expect(isToggleEnabled).toBe(false);
+  await createAndManageJobPage.prerequisiteQuestion.questionField.fill('automation questions 2');
+  await answerCreationLoop(createAndManageJobPage);
+  await createAndManageJobPage.prerequisiteQuestion.multipleQuestionToggle.click();
+  await createAndManageJobPage.prerequisiteQuestion.saveQuestionButton.click();
+  await createAndManageJobPage.prerequisiteQuestion.savePrerequisiteButton.click();
+  
 });

@@ -1,3 +1,4 @@
+
 export const autoGenerationCreateJob ={
   //jobName
   generateJobName: function(){
@@ -17,3 +18,11 @@ export const autoGenerationCreateJob ={
   }
   
 };
+
+export async function answerCreationLoop(createAndManageJobPage) {
+  for (let i = 1; i <= 10; i++) {
+    await createAndManageJobPage.prerequisiteQuestion.answerField.fill(`Answer ${i}`);
+    await createAndManageJobPage.prerequisiteQuestion.addAnswerButton.click();
+  }
+}
+

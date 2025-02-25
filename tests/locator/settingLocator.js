@@ -26,8 +26,10 @@ export const createAndManageJob = async (page) => ({
 });
 
 export const createJobForm = async (page) => ({
-  
+  //successMessage
+  sucessMessage: await page.getByText('Content saved'),
   //job detail
+  jobDetailCopy: await page.locator(`//p[@class='JobDetails_explain__i2Rzm']`),
   jobDetailSaveButton: await page.getByRole('button', { name: 'Save' }),
   jobTitle :  await page.getByPlaceholder('New job'),
   jobCode :await page.getByLabel('Code *Required for job URL'),
@@ -80,7 +82,33 @@ export const createJobForm = async (page) => ({
     partTime: await page.getByLabel('PART_TIME'),
     contract: await page.getByLabel('CONTRACT', { exact: true }),
     freelance: await page.getByLabel('FREELANCE', { exact: true })
-  }
-});
+  },
 
-const createJobData = [];
+
+  //Group jobs
+  groupsJob: {
+    groupJobCopy: await page.getByText('Group jobs by campaign,'),
+    groupJobTab: await page.getByRole('button', { name: 'Group jobs' }),
+    groupJobDropDownContainer: await page.getByLabel('Select groupNo group'),
+    createNewGroupButton: await page.getByText('Create a new group'),
+    newGroup:{
+      groupTitle: await page.getByPlaceholder('Enter text here'),
+      groupDescription: await page.getByPlaceholder('Enter text here'),
+    },
+    saveButton: await page.getByRole('button', { name: 'Save' }) 
+  },
+
+  //Prerequisite and EDI
+  prerequsiteAndEDITab: await page.getByRole('button', { name: 'Pre-requisites and EDI' }),
+  prerequisiteQuestion: {
+    prerequisteCopy: await page.getByText('Ask candidates questions to'),
+    addQuestionButton: await page.getByRole('button', { name: 'Add question' }),
+    questionField: await page.getByLabel('Prerequisite question *Max'),
+    answerField: await page.getByLabel('Answer', { exact: true }),
+    addAnswerButton: await page.getByRole('button', { name: 'Add', exact: true }),
+    multipleQuestionToggle: await page.locator('label').filter({ hasText: 'Allow multiple answers' }).locator('span'),
+    saveQuestionButton: await page.locator('#modal-lightbox').getByRole('button', { name: 'Save' }),
+    savePrerequisiteButton: await page.getByRole('button', { name: 'Save' })
+  }
+
+});
