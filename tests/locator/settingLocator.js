@@ -1,3 +1,4 @@
+import { scheduler } from "timers/promises";
 
 export const settingLocator = async (page) => ({
   settingIcon: await page.locator(`a[aria-label='Settings'] svg path`),
@@ -28,8 +29,10 @@ export const createAndManageJob = async (page) => ({
 export const createJobForm = async (page) => ({
   //successMessage
   sucessMessage: await page.getByText('Content saved'),
+  //save Button
+  saveButton: await page.getByRole('button', { name: 'Save' }),
   //job detail
-  jobDetailCopy: await page.locator(`//p[@class='JobDetails_explain__i2Rzm']`),
+  jobDetailCopy: await page.getByText('This section outlines the'),
   jobDetailSaveButton: await page.getByRole('button', { name: 'Save' }),
   jobTitle :  await page.getByPlaceholder('New job'),
   jobCode :await page.getByLabel('Code *Required for job URL'),
@@ -94,8 +97,7 @@ export const createJobForm = async (page) => ({
     newGroup:{
       groupTitle: await page.getByPlaceholder('Enter text here'),
       groupDescription: await page.getByPlaceholder('Enter text here'),
-    },
-    saveButton: await page.getByRole('button', { name: 'Save' }) 
+    }
   },
 
   //Prerequisite and EDI
@@ -107,8 +109,75 @@ export const createJobForm = async (page) => ({
     answerField: await page.getByLabel('Answer', { exact: true }),
     addAnswerButton: await page.getByRole('button', { name: 'Add', exact: true }),
     multipleQuestionToggle: await page.locator('label').filter({ hasText: 'Allow multiple answers' }).locator('span'),
-    saveQuestionButton: await page.locator('#modal-lightbox').getByRole('button', { name: 'Save' }),
-    savePrerequisiteButton: await page.getByRole('button', { name: 'Save' })
+    saveQuestionButton: await page.locator('#modal-lightbox').getByRole('button', { name: 'Save' })
+  },
+  EDI:{
+    EDITab: await page.getByRole('button', { name: 'Equity, Diversity, &' }),
+    EDICopy: await page.getByText('Select which questions you'),
+    EDIList: [
+      {
+        dateOfBirth: await page.locator('li').filter({ hasText: 'Checkbox fieldDate of birth' }).locator('span').first(),
+      },
+      {
+        ethnicity: await page.locator('li').filter({ hasText: 'Checkbox fieldWhich of the following best describes your ethnicity?Response' }).locator('span').first(),
+      },
+      {
+        gender: await page.locator('li').filter({ hasText: 'Checkbox fieldWhich of the following genders do you identify as?Response options' }).locator('span').first()
+      },
+      {
+      sexualOrientatoin: await page.locator('li').filter({ hasText: 'Checkbox fieldWhich of the following best describes your sexual orientation?' }).locator('span').first()
+      },
+      {
+        disability: await page.locator('li').filter({ hasText: 'Checkbox fieldDo you consider' }).locator('span').first()
+      },
+      {
+        neurodiverse: await page.locator('li').filter({ hasText: 'Checkbox fieldDo you have any' }).locator('span').first()
+      },
+      {
+        religion: await page.locator('li').filter({ hasText: 'Checkbox fieldWhich of these' }).locator('span').first()
+      },
+      {
+        school: await page.locator('li').filter({ hasText: 'Checkbox fieldWhat type of' }).locator('span').first()
+      },
+      {
+        meal: await page.locator('li').filter({ hasText: 'Checkbox fieldWere you' }).locator('span').first()
+      }
+    ],
+    reponseList: [
+      {
+        ethnicity: await page.locator('li').filter({ hasText: 'Checkbox fieldWhich of the following best describes your ethnicity?Response' }).getByRole('button'),
+        responseOverlay: await page.getByText('Which of the following best describes your ethnicity?Asian - ChineseAsian -')
+      },
+      {
+        gender: await page.locator('li').filter({ hasText: 'Checkbox fieldWhich of the following genders do you identify as?Response options' }).getByRole('button'),
+        responseOverlay: await page.getByText('Which of the following genders do you identify as?FemaleMaleNon-binary /')
+      },
+      {
+        sexualOrientatoin: await page.locator('li').filter({ hasText: 'Checkbox fieldWhich of the following best describes your sexual orientation?' }).getByRole('button'),
+        responseOverlay: await page.getByText('Which of the following best describes your sexual orientation?BisexualGay or')
+      },
+      {
+        disability: await page.locator('li').filter({ hasText: 'Checkbox fieldDo you consider' }).getByRole('button'),
+        responseOverlay: await page.locator('li').filter({ hasText: 'Checkbox fieldDo you consider' }).getByRole('button')
+      },
+      {
+        neurodiverse: await page.locator('li').filter({ hasText: 'Checkbox fieldDo you have any' }).getByRole('button'),
+        responseOverlay: await page.getByText('Do you have any of the following Neurodiverse conditions?Attention Deficit')
+      },
+      {
+        religion: await page.locator('li').filter({ hasText: 'Checkbox fieldWhich of these' }).getByRole('button'),
+        responseOverlay: await page.getByText('Which of these best describes your religion?No')
+      },
+      {
+        school: await page.locator('li').filter({ hasText: 'Checkbox fieldWhat type of' }).getByRole('button'),
+        responseOverlay: await page.getByText('What type of school did you mainly attend between ages 11-16?Selective state')
+      },
+      {
+        meal: await page.locator('li').filter({ hasText: 'Checkbox fieldWere you' }).getByRole('button'),
+        responseOverlay: await page.getByText('Were you eligible for free school meals?YesNoNot applicable (finished school')
+      }
+
+    ]
   }
 
 });

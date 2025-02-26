@@ -3,20 +3,20 @@ import {test, expect, chromium} from '@playwright/test';
 import * as landingPage from './locator/landingPage.js';
 import * as data from './test-data/data.js';
 import * as setting from './locator/settingLocator.js';
-import { autoGenerationCreateJob, answerCreationLoop, checkIfTheSaveIsSuccess } from './ulti-function/generateNameForJob.js';
+import { autoGenerationCreateJob, answerCreationLoop, checkButtonDisabled, checkForSuccessMessage} from './ulti-function/generateNameForJob.js';
 import dayjs from "dayjs";
-import { create } from 'domain';
 
 
 test('Create a job process', async ({page}) => {
+  page.setDefaultTimeout(100000);
   //variable needed for the locator
   const header = await landingPage.headerLocators(page);
   const signInField = await landingPage.signInFieldLocator(page);
   const settingPage = await setting.settingLocator(page);
   const createAndManageJobPage = await setting.createJobForm(page);
   const createAndManageJob = await setting.createAndManageJob(page);
-  
-
+  const EDIListLocator = createAndManageJobPage.EDI.EDIList;
+  const responseList = createAndManageJobPage.EDI.reponseList;
   //dayjs 
   let today = dayjs().format('DD/MM/YYYY');
   let tomorrow = dayjs().add(1, 'day').format('DD/MM/YYYY');
@@ -89,12 +89,16 @@ test('Create a job process', async ({page}) => {
   console.log('Maximum salary: 2000');
   
   // Save the job
-  await createAndManageJobPage.jobDetailSaveButton.click();
+  await createAndManageJobPage.saveButton.click();
   console.log('Save the job');
 
-  // Wait for the save button to be disabled
-  await page.waitForTimeout(5000);
+  //check for success message
+  await checkForSuccessMessage(createAndManageJobPage.sucessMessage);
 
+  //check if the button is disable after save
+  await checkButtonDisabled(createAndManageJobPage.saveButton);
+
+  await page.waitForTimeout(2000);
 
   //create a new group
   await createAndManageJobPage.groupsJob.groupJobTab.click();
@@ -103,12 +107,13 @@ test('Create a job process', async ({page}) => {
   await createAndManageJobPage.groupsJob.createNewGroupButton.click();
   await createAndManageJobPage.groupsJob.newGroup.groupTitle.fill('Automation');
   await createAndManageJobPage.groupsJob.newGroup.groupDescription.fill('This is an automation group');
-  await createAndManageJobPage.groupsJob.saveButton.click();
+  await createAndManageJobPage.saveButton.click();
 
-  //check if the group is created successfully
-  await createAndManageJobPage.sucessMessage.waitFor({ state: 'visible' });
-  expect(await createAndManageJobPage.sucessMessage.isVisible()).toBe(true);
-  console.log('Group created successfully');
+  //check for success message
+  await checkForSuccessMessage(createAndManageJobPage.sucessMessage);
+
+  //check if the button is disable after save
+  await checkButtonDisabled(createAndManageJobPage.saveButton);
 
   //pre-requiste questions creation
   await createAndManageJobPage.prerequsiteAndEDITab.click();
@@ -129,6 +134,50 @@ test('Create a job process', async ({page}) => {
   await answerCreationLoop(createAndManageJobPage);
   await createAndManageJobPage.prerequisiteQuestion.multipleQuestionToggle.click();
   await createAndManageJobPage.prerequisiteQuestion.saveQuestionButton.click();
-  await createAndManageJobPage.prerequisiteQuestion.savePrerequisiteButton.click();
-  
+  await createAndManageJobPage.saveButton.click();
+
+  //check for success message
+  await checkForSuccessMessage(createAndManageJobPage.sucessMessage);
+
+  //check if the button is disable after save
+  await checkButtonDisabled(createAndManageJobPage.saveButton);
+
+  //EDI
+  await createAndManageJobPage.EDI.EDITab.click();
+  await expect(createAndManageJobPage.EDI.EDICopy).toHaveText(data.copy.EDICopy);
+  //loop through and check if the list is unchecked by default
+  for (const item of EDIListLocator) {
+    for (const key in item) {
+      const locator = item[key];
+      const isChecked = await locator.isChecked();
+      expect(isChecked).toBe(false);
+      if(!isChecked){
+        await locator.click();
+      }
+    }
+  }
+
+  //loop to check the response overlay
+  for (const item of responseList) {
+    // Click on the first locator in the object
+    for (const key in item) {
+      if (key !== 'responseOverlay') {
+        await item[key].click();
+
+        // Verify if the responseOverlay is visible
+        const responseOverlayLocator = await item.responseOverlay;
+        await expect(responseOverlayLocator).toBeVisible();
+        const isVisible = await responseOverlayLocator.isVisible();
+            if (isVisible) {
+                await page.keyboard.press('Escape');
+            }
+      }
+    }
+  }
+
+  await createAndManageJobPage.saveButton.click();
+
+  await checkButtonDisabled(createAndManageJobPage.saveButton);
+
+  await checkForSuccessMessage(createAndManageJobPage.sucessMessage);
 });

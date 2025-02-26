@@ -23,7 +23,7 @@ export const signUpFieldsLocators = async (page) => ({
   emailField : await page.locator(`//input[@name='email']`),
   passwordField : await page.locator(`//input[@name='password']`),
   registerButton: await page.locator(`//button[@type='submit']`),
-  verificationCodeInputField : await page.locator(`//input[@placeholder='label_placeholder_passcode']`),
+  verificationCodeInputField : await page.locator(`//input[@placeholder='Enter 6 digit one-time passcode']`),
   continueButton: await page.locator(`//button[normalize-space()='Continue']`),
   bespokenInputField : await page.locator(`//div[@class='FormFields_inputContainer__EA8IU']//input`)
 });

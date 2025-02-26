@@ -3,7 +3,7 @@ import { headerLocators, signUpFieldsLocators, mailinatorLocators } from './loca
 import { autoGenerationSignup } from './ulti-function/autoGenerationSignup.js';
 
 test('Sign up page', async () => {
-  const browser = await chromium.launch({ headless: false }); // Launch Chrome (Chromium)
+  const browser = await chromium.launch(); // Launch Chrome (Chromium)
   const context = await browser.newContext();
   const vizzy = await context.newPage();
   const mailinator = await context.newPage();
@@ -55,5 +55,7 @@ test('Sign up page', async () => {
 
   // Expect to see the bespoke input field
   await expect(signUpField.bespokenInputField).toBeVisible();
+
+  await vizzy.waitForTimeout(50000);
   await browser.close();
 }, 100000); // Increase the timeout to 100 seconds

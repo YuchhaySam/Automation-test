@@ -1,3 +1,4 @@
+import { expect } from '@playwright/test';
 
 export const autoGenerationCreateJob ={
   //jobName
@@ -26,3 +27,12 @@ export async function answerCreationLoop(createAndManageJobPage) {
   }
 }
 
+export async function checkButtonDisabled(button) {
+  const isButtonDisabled = await button.isDisabled();
+  expect(isButtonDisabled).toBe(true);
+}
+export async function checkForSuccessMessage(message){
+  await message.waitFor({ state: 'visible' });
+  expect(await message.isVisible()).toBe(true);
+  console.log('Group created successfully');
+}
