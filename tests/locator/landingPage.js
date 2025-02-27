@@ -8,7 +8,8 @@ export const headerLocators = async (page) => ({
   vizzyForBusiness: await page.locator('.DesktopView_desktopOnly___ZyYW > a:nth-child(1)'),
   loginButton: await page.locator('button.Button_reverseTertiary__IoEZ6'),
   signUpButton : await page.locator(`//button[normalize-space()='Create your free profile']`),
-  vizzyLogo : await page.locator(`//div[@class='Nav_blurredBackground__dC9BO']`)
+  vizzyLogo : await page.locator(`//div[@class='Nav_blurredBackground__dC9BO']`),
+  cookieAllow: await page.getByRole('button', { name: 'Allow all' })
 });
 
 export const signInFieldLocator = async (page) => ({

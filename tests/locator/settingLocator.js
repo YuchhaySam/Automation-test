@@ -177,7 +177,69 @@ export const createJobForm = async (page) => ({
         responseOverlay: await page.getByText('Were you eligible for free school meals?YesNoNot applicable (finished school')
       }
 
-    ]
-  }
+    ],
+    EDISuccessMessage : await page.getByText('Success!')
+  },
 
+  //Candidate profile
+  candidateProfileTab : await page.getByRole('button', { name: 'Candidate profiles' }),
+  customQA : {
+    customQACopy: await page.getByText('Select questions from Vizzy\'s'),
+    customQAContainer : await page.getByLabel('Choose from listSelect'),
+    customQADropdown: {
+      createYourOwn: {
+        dropDown: await page.getByText('Create your own', { exact: true }),
+        inputField: await page.getByLabel('Text field'),
+        addButton: await page.getByRole('button', { name: 'Add' })
+      },
+      preDefindQuestion1: await page.getByText('Why would you like to join')
+    },
+    kebabMenu1: await page.getByRole('main').getByLabel('button'),
+    kebabMenu2: await page.getByLabel('button').nth(4),
+    answerRequrement: {
+      copy: await page.getByText('Specify the type of media'),
+      answerRequrementButton: await page.getByRole('button', { name: 'Answer requirements' }),
+      toggle: [
+        {
+          name: 'text answer',
+          locator: await page.getByRole('row', { name: 'Text answer Provide an answer' }).locator('span').first()
+        },
+        {
+          name: 'video(both)',
+          locator: await page.getByRole('row', { name: 'Video Upload a video, or add' }).locator('span').first()
+        },
+        {
+          name: 'video upload',
+          locator: await page.getByRole('row', { name: 'Video upload Video upload' }).locator('span').first()
+        },
+        {
+          name: 'video link',
+          locator: await page.getByRole('row', { name: 'Video via a weblink Add video' }).locator('span').first()
+        },
+        {
+          name: 'portfolio',
+          locator: await page.getByRole('row', { name: 'Portfolio Upload a PDF or add' }).locator('span').first()
+        },
+        {
+          name: 'document',
+          locator: await page.getByRole('row', { name: 'Document Upload a PDF file.' }).locator('span').first()
+        },
+        {
+          name: 'weblink',
+          locator: await page.getByRole('row', { name: 'Weblink Add a weblink. hidden' }).locator('span').first()
+        },
+        {
+          name: 'audio',
+          locator: await page.getByRole('row', { name: 'Audio Upload an audio file.' }).locator('span').first()
+        },
+        {
+          name: 'image',
+          locator: await page.getByRole('row', { name: 'Image Upload an image file.' }).locator('span').first()
+        }
+      ],
+      saveButton: await page.locator('#modal-lightbox').getByRole('button', { name: 'Save' }),
+      confirmButton: await page.getByRole('button', { name: 'Confirm' })
+    }
+      
+  } 
 });

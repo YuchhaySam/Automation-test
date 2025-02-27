@@ -36,3 +36,13 @@ export async function checkForSuccessMessage(message){
   expect(await message.isVisible()).toBe(true);
   console.log('Group created successfully');
 }
+
+export async function checkTogglesAreOff(toggles) {
+  for (const toggle of toggles) {
+    const isChecked = await toggle.locator.isChecked();
+    expect(isChecked).toBe(false);
+    if(!isChecked){
+      await toggle.locator.click();
+    }
+  }
+}

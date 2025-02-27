@@ -3,7 +3,7 @@ import {test, expect, chromium} from '@playwright/test';
 import * as landingPage from './locator/landingPage.js';
 import * as data from './test-data/data.js';
 import * as setting from './locator/settingLocator.js';
-import { autoGenerationCreateJob, answerCreationLoop, checkButtonDisabled, checkForSuccessMessage} from './ulti-function/generateNameForJob.js';
+import { autoGenerationCreateJob, answerCreationLoop, checkButtonDisabled, checkForSuccessMessage, checkTogglesAreOff} from './ulti-function/generateNameForJob.js';
 import dayjs from "dayjs";
 
 
@@ -17,6 +17,7 @@ test('Create a job process', async ({page}) => {
   const createAndManageJob = await setting.createAndManageJob(page);
   const EDIListLocator = createAndManageJobPage.EDI.EDIList;
   const responseList = createAndManageJobPage.EDI.reponseList;
+  const answerRequirementToggle = createAndManageJobPage.customQA.answerRequrement.toggle;
   //dayjs 
   let today = dayjs().format('DD/MM/YYYY');
   let tomorrow = dayjs().add(1, 'day').format('DD/MM/YYYY');
@@ -27,6 +28,9 @@ test('Create a job process', async ({page}) => {
 
   //navigate to Vizzy
   page.goto('https://staging.vizzy.com/');
+  
+  //allow cookie
+  await header.cookieAllow.click();
 
   //Login 
   await header.loginButton.click();
@@ -177,7 +181,28 @@ test('Create a job process', async ({page}) => {
 
   await createAndManageJobPage.saveButton.click();
 
+  await checkForSuccessMessage(createAndManageJobPage.EDI.EDISuccessMessage);
   await checkButtonDisabled(createAndManageJobPage.saveButton);
 
+  //customQ&A
+  await createAndManageJobPage.candidateProfileTab.click();
+  await expect(createAndManageJobPage.customQA.customQACopy).toHaveText(data.copy.customQA);
+  //add a custom questoin
+  await createAndManageJobPage.customQA.customQAContainer.click();
+  await createAndManageJobPage.customQA.customQADropdown.createYourOwn.dropDown.click();
+  await createAndManageJobPage.customQA.customQADropdown.createYourOwn.inputField.fill('Please answer this custom question');
+  await createAndManageJobPage.customQA.customQADropdown.createYourOwn.addButton.click();
+  //add a prefix question
+  await createAndManageJobPage.customQA.customQAContainer.click();
+  await createAndManageJobPage.customQA.customQADropdown.preDefindQuestion1.click();
+  //answer requirement to custom question
+  await createAndManageJobPage.customQA.kebabMenu2.click();
+  await createAndManageJobPage.customQA.answerRequrement.answerRequrementButton.click();
+  await expect(createAndManageJobPage.customQA.answerRequrement.copy).toHaveText(data.copy.answerRequirementCopy);
+  await checkTogglesAreOff(answerRequirementToggle);
+  await createAndManageJobPage.customQA.answerRequrement.saveButton.click();
+  await createAndManageJobPage.customQA.answerRequrement.confirmButton.click();
+  await createAndManageJobPage.saveButton.click();
   await checkForSuccessMessage(createAndManageJobPage.sucessMessage);
+  await checkButtonDisabled(createAndManageJobPage.saveButton);
 });
