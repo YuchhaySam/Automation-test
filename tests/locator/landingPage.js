@@ -15,7 +15,8 @@ export const headerLocators = async (page) => ({
 export const signInFieldLocator = async (page) => ({
   emailField: await page.locator(`//input[@name='email']`),
   passwordField: await page.locator(`//input[@name='password']`),
-  signInButton: await page.locator(`//button[@type='submit']`)
+  signInButton: await page.locator(`//button[@type='submit']`),
+  signInButtonOnModal: await page.getByRole('link', { name: 'Sign in' })
 });
 
 export const signUpFieldsLocators = async (page) => ({

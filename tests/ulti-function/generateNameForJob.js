@@ -9,7 +9,8 @@ export const autoGenerationCreateJob ={
   
   //code auto generation
   codeGenerate: function(){
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    //const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
     let code = '';
     // Generate the rest of the password
     for (let i = 1; i < 8; i++) {
@@ -37,12 +38,19 @@ export async function checkForSuccessMessage(message){
   console.log('Group created successfully');
 }
 
-export async function checkTogglesAreOff(toggles) {
+export async function checkTogglesStatus(toggles) {
   for (const toggle of toggles) {
     const isChecked = await toggle.locator.isChecked();
     expect(isChecked).toBe(false);
     if(!isChecked){
       await toggle.locator.click();
     }
+  }
+}
+
+export async function checkTogglesStatusOn(toggles){
+  for (const toggle of toggles) {
+    const isChecked = await toggle.locator.isChecked();
+    expect(isChecked).toBe(true);
   }
 }

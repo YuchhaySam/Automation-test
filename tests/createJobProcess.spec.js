@@ -3,8 +3,9 @@ import {test, expect, chromium} from '@playwright/test';
 import * as landingPage from './locator/landingPage.js';
 import * as data from './test-data/data.js';
 import * as setting from './locator/settingLocator.js';
-import { autoGenerationCreateJob, answerCreationLoop, checkButtonDisabled, checkForSuccessMessage, checkTogglesAreOff} from './ulti-function/generateNameForJob.js';
+import { autoGenerationCreateJob, answerCreationLoop, checkButtonDisabled, checkForSuccessMessage, checkTogglesStatus, checkTogglesStatusOn} from './ulti-function/generateNameForJob.js';
 import dayjs from "dayjs";
+import { create } from 'domain';
 
 
 test('Create a job process', async ({page}) => {
@@ -197,12 +198,59 @@ test('Create a job process', async ({page}) => {
   await createAndManageJobPage.customQA.customQADropdown.preDefindQuestion1.click();
   //answer requirement to custom question
   await createAndManageJobPage.customQA.kebabMenu2.click();
+  await createAndManageJobPage.customQA.kebabMenu2.click();
   await createAndManageJobPage.customQA.answerRequrement.answerRequrementButton.click();
   await expect(createAndManageJobPage.customQA.answerRequrement.copy).toHaveText(data.copy.answerRequirementCopy);
-  await checkTogglesAreOff(answerRequirementToggle);
+  await checkTogglesStatus(answerRequirementToggle);
   await createAndManageJobPage.customQA.answerRequrement.saveButton.click();
   await createAndManageJobPage.customQA.answerRequrement.confirmButton.click();
   await createAndManageJobPage.saveButton.click();
   await checkForSuccessMessage(createAndManageJobPage.sucessMessage);
   await checkButtonDisabled(createAndManageJobPage.saveButton);
+
+  //submission requirement
+  await createAndManageJobPage.submissionRequirement.submissionTab.click();
+  await expect (createAndManageJobPage.submissionRequirement.copy1).toHaveText(data.copy.submissionRequirement.copy1);
+  await expect(createAndManageJobPage.submissionRequirement.copy2).toHaveText(data.copy.submissionRequirement.copy2);
+  await checkTogglesStatusOn(createAndManageJobPage.submissionRequirement.toggle);
+  await checkTogglesStatus(createAndManageJobPage.submissionRequirement.toggleForMedia);
+  await createAndManageJobPage.saveButton.click();
+  await checkForSuccessMessage(createAndManageJobPage.sucessMessage);
+  await checkButtonDisabled(createAndManageJobPage.saveButton);
+
+  //recruiter access
+  await createAndManageJobPage.screeningTab.click();
+  await expect(createAndManageJobPage.recruiterAcess.copy1).toHaveText(data.copy.recruiterAcess.copy1);
+  await expect(createAndManageJobPage.recruiterAcess.copy2).toHaveText(data.copy.recruiterAcess.copy2);
+  await createAndManageJobPage.recruiterAcess.selectAllButton.click();
+  await createAndManageJobPage.recruiterAcess.assignButton.click();
+  await createAndManageJobPage.recruiterAcess.confirmYes.click();
+  await createAndManageJobPage.saveButton.click();
+  await checkForSuccessMessage(createAndManageJobPage.sucessMessage);
+  await checkButtonDisabled(createAndManageJobPage.saveButton);
+
+  //anon hiring
+  await createAndManageJobPage.anonHiring.anonHiringTab.click();
+  await expect(createAndManageJobPage.anonHiring.copy).toHaveText(data.copy.anonHiring);
+  await checkTogglesStatus(createAndManageJobPage.anonHiring.checkBox);
+  await createAndManageJobPage.saveButton.click();
+  await checkForSuccessMessage(createAndManageJobPage.sucessMessage);
+  await checkButtonDisabled(createAndManageJobPage.saveButton);
+
+  //landing page
+  await createAndManageJobPage.landingPage.landingPageTab.click();
+  await expect(createAndManageJobPage.landingPage.copy).toHaveText(data.copy.landingPage);
+  const primaryLandingPage = await createAndManageJobPage.landingPage.primary.isChecked();
+  expect(primaryLandingPage).toBe(true);
+  checkButtonDisabled(createAndManageJobPage.saveButton);
+
+  //check if publish button is enable
+  const publishButton = await createAndManageJobPage.publishButton.isEnabled();
+  expect(publishButton).toBe(true);
+  await createAndManageJobPage.publishButton.click();
+  await createAndManageJobPage.confirmPublish.click();
+  await expect(createAndManageJobPage.publishedMessage).toBeVisible();
+  await page.waitForTimeout(3000);
+  expect(page).toHaveTitle(data.pageTitle.settingTitle);
+  
 });

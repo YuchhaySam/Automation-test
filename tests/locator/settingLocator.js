@@ -2,23 +2,14 @@ import { scheduler } from "timers/promises";
 
 export const settingLocator = async (page) => ({
   settingIcon: await page.locator(`a[aria-label='Settings'] svg path`),
-
   MyAccount: await page.locator(`//aside[@class='Sidebar_sidebar__359Vd SettingsLayout_sidebar__IM3iT']//a[normalize-space()='My account']`),
-
   businessAccountSetting : await page.locator(`//aside[@class='Sidebar_sidebar__359Vd SettingsLayout_sidebar__IM3iT']//a[contains(text(),'Business account settings')]`),
-
   createAndManageJob : await page.locator(`aside[class='Sidebar_sidebar__359Vd SettingsLayout_sidebar__IM3iT'] div:nth-child(4) a:nth-child(1)`),
-
   createAndManageCommuntiy : await page.locator(`//aside[@class='Sidebar_sidebar__359Vd SettingsLayout_sidebar__IM3iT']//a[contains(text(),'Create & manage community')]`),
-
   candidateLandingPage : await page.locator(`//aside[@class='Sidebar_sidebar__359Vd SettingsLayout_sidebar__IM3iT']//a[contains(text(),'Candidate landing page')]`),
-  
   communityLandingPage : await page.locator(`//aside[@class='Sidebar_sidebar__359Vd SettingsLayout_sidebar__IM3iT']//a[contains(text(),'Community landing page')]`),
-  
   businessVizzyProfile : await page.locator(`//aside[@class='Sidebar_sidebar__359Vd SettingsLayout_sidebar__IM3iT']//a[contains(text(),'Business Vizzy profile')]`),
-
   integrations : await page.locator(`//aside[@class='Sidebar_sidebar__359Vd SettingsLayout_sidebar__IM3iT']//a[contains(text(),'Integrations')]`),
-
   logOut: await page.locator(`//aside[@class='Sidebar_sidebar__359Vd SettingsLayout_sidebar__IM3iT']//a[normalize-space()='Log out']`)
 });
 
@@ -194,7 +185,7 @@ export const createJobForm = async (page) => ({
       },
       preDefindQuestion1: await page.getByText('Why would you like to join')
     },
-    kebabMenu1: await page.getByRole('main').getByLabel('button'),
+    kebabMenu1: await page.getByLabel('button').nth(2),
     kebabMenu2: await page.getByLabel('button').nth(4),
     answerRequrement: {
       copy: await page.getByText('Specify the type of media'),
@@ -241,5 +232,119 @@ export const createJobForm = async (page) => ({
       confirmButton: await page.getByRole('button', { name: 'Confirm' })
     }
       
-  } 
+  },
+  
+  //submissionRequirement
+  submissionRequirement:{
+    submissionTab : await page.getByRole('button', { name: 'Submission requirements' }),
+    copy1: await page.getByText('Select the information'),
+    copy2: await page.getByText('Anything listed as neither'),
+    toggle: [
+      {
+        name: 'work experience',
+        locator: await page.getByRole('row', { name: 'Work experience Checkbox' }).locator('span').first()
+      },
+      {
+        name: 'psychometrics',
+        locator: await page.getByRole('row', { name: 'Psychometrics Checkbox field' }).locator('span').first()
+      },
+      {
+        name: 'education',
+        locator: await page.getByRole('row', { name: 'Education Checkbox field' }).locator('span').first()
+      },
+      {
+        name: 'skills',
+        locator: await page.getByRole('row', { name: 'Skills Checkbox field' }).locator('span').first()
+      }
+    ],
+    toggleForMedia: [
+      {
+        name: 'projects',
+        locator: await page.getByRole('row', { name: 'Projects Checkbox field' }).locator('span').first(),
+      },
+      {
+        name: 'media cards',
+        locator: await page.getByRole('row', { name: 'Media cards Checkbox field' }).locator('span').first()
+      },
+      {
+        name: 'Q&A',
+        locator: await page.getByRole('row', { name: 'Q&A Checkbox field Checkbox' }).locator('span').first()
+      }
+    ]
+  },
+
+  //screening
+  screeningTab: await page.getByRole('button', { name: 'Screening' }),
+  recruiterAcess: {
+    copy1: await page.getByText('Account owners, Super admins'),
+    copy2: await page.getByText('\'Recruiters\' need to be'),
+    selectAllButton: await page.getByText('Select all'),
+    assignButton: await page.getByRole('button', { name: 'Assign', exact: true }),
+    unassignButton: await page.getByRole('button', { name: 'Unassign' }),
+    confirmYes: await page.getByRole('button', { name: 'Yes' })
+  },
+  anonHiring: {
+    anonHiringTab: await page.getByRole('button', { name: 'Anonymised hiring' }),
+    copy: await page.getByText('Select the content that'),
+    checkBox: [
+      {
+        name: 'profile picture',
+        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldProfile picture' }).locator('span').first()
+      },
+      {
+        name: 'name & pronouns',
+        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldName & pronouns' }).locator('span').first()
+      },
+      {
+        name: 'Bio',
+        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldBio location,' }).locator('span').first()
+      },
+      {
+        name: 'social media',
+        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldSocial media &' }).locator('span').first()
+      },
+      {
+        name: 'psychometrics',
+        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldPsychometrics' }).locator('span').first()
+      },
+      {
+        name: 'custom question',
+        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldCustom questions' }).locator('span').first()
+      },
+      {
+        name: 'education',
+        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldEducation' }).locator('span').first()
+      },
+      {
+        name: 'work experience',
+        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldWork experience' }).locator('span').first()
+      },
+      {
+        name: 'projects',
+        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldProjects' }).locator('span').first()
+      },
+      {
+        name: 'skills',
+        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldSkills' }).locator('span').first()
+      },
+      {
+        name: 'media cards',
+        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldMedia cards' }).locator('span').first()
+      },
+      {
+        name: 'Q&A',
+        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldQ&As' }).locator('span').first()
+      }
+    ]
+  },
+
+  //landing page
+  landingPage:{
+    landingPageTab: await page.getByRole('button', { name: 'Landing page' }),
+    copy: await page.getByText('Assign the landing page that'),
+    primary:  await page.locator('ul').filter({ hasText: 'Primary landing pageNew' }).locator('span').first()
+  },
+  publishButton:  await page.getByRole('button', { name: 'Publish' }),
+  confirmPublish: await page.getByRole('button', { name: 'Yes, publish now!' }),
+  publishedMessage: await page.getByText('Job is published now')
 });
