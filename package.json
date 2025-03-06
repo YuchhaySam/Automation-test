@@ -13,6 +13,7 @@
     "@types/node": "^22.10.3"
   },
   "dependencies": {
-    "dayjs": "^1.11.13"
+    "dayjs": "^1.11.13",
+    "electron": "^35.0.0"
   }
 }

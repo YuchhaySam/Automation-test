@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test"
 
 export const testcase = {
-    signUp : async function(signUpField, autoGeneration, mailinator, mailinatorField, email, password, lastName) {
+    signUpStaging : async function(signUpField, autoGeneration, mailinator, mailinatorField, email, password, lastName) {
 
         await signUpField.firstNameField.fill(autoGeneration.firstName);
         console.log('First name filled:', autoGeneration.firstName);
@@ -33,5 +33,42 @@ export const testcase = {
         // Go back to Vizzy and complete the sign-up process
         await signUpField.verificationCodeInputField.fill(emailContent);
         await signUpField.continueButton.click();
+      },
+
+      signUpBeta: async (signUpField, autoGeneration, mailTM, mailTMField, email, password, lastName) => {
+        await signUpField.firstNameField.fill(autoGeneration.firstName);
+        console.log('First name filled:', autoGeneration.firstName);
+      
+        await signUpField.lastNameField.fill(lastName);
+        console.log('Last name filled:', lastName);
+      
+        await signUpField.emailField.fill(email);
+        console.log('Email filled:', email);
+      
+        await signUpField.passwordField.fill(password);
+        console.log('Password filled:', password);
+      
+        await signUpField.registerButton.click();
+      
+        // Navigate to mail tm and retrieve the verification code
+        await mailTM.goto('https://www.mailinator.com/');
+        await mailinatorField.emailInputField.fill(email);
+        await mailinatorField.emailInputField.press('Enter');
+        await mailinatorField.verificationInbox.click();
+        console.log('Went inside inbox');
+      
+        // Wait for the email content to load and extract the verification code
+        await mailinatorField.codelocator.waitFor({ state: 'visible', timeout: 60000 });
+        const emailContent = await mailinatorField.codelocator.textContent();
+        console.log('Email content:', emailContent);
+      
+        // Go back to Vizzy and complete the sign-up process
+        await signUpField.verificationCodeInputField.fill(emailContent);
+        await signUpField.continueButton.click();
+      },
+      signIn : async (emailField, passwordField, email, password, button) =>{
+        await emailField.fill(email);
+        await passwordField.fill(password);
+        await button.click();
       }
 }

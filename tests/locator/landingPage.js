@@ -39,6 +39,15 @@ export const mailinatorLocators = async (page) => {
   };
 };
 
+export const mailTMLocator = async (page) => ({
+  profileButton : await page.getByLabel('Account'),
+  createAccount : await page.getByRole('menuitem', { name: 'Create an account' }),
+  email: await page.getByPlaceholder('johndoe'),
+  emailBack: await page.getByRole('combobox'),
+  password: await page.getByPlaceholder('******'),
+  createButton: await page.getByRole('button', { name: 'Create' }),
+});
+
 
 export const heroSectionLocators = async (page) => ({
   heroTitle: await page.locator('h1.LandingPage_heading__4jC4e'),

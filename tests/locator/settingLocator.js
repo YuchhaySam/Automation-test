@@ -32,9 +32,9 @@ export const createJobForm = async (page) => ({
   timeZoneDefault: await page.locator(`//input[@placeholder='Select']`),
   applicationType: {
     dropdownContainer :  page.locator('label').filter({ hasText: 'Application type *' }).getByLabel('dropdown indicator'),
-    internalOnly : await page.getByLabel('INTERNAL', { exact: true }),
-    externalOnly: await page.getByLabel('EXTERNAL', { exact: true }),
-    both: await page.getByLabel('BOTH', { exact: true })
+    internalOnly : await page.getByLabel('Internal', { exact: true }),
+    externalOnly: await page.getByLabel('External', { exact: true }),
+    both: await page.getByLabel('Both', { exact: true })
   },
   jobDescription: await page.getByPlaceholder('Add a description for'),
   requirement : await page.getByPlaceholder('Add requirements for the role'),
@@ -60,10 +60,10 @@ export const createJobForm = async (page) => ({
   //salary value: HOURLY, DAILY, MONTHLY, YEARLY
   salaryTypeDropdown: {
     salaryTypeDropdownContainer: await page.locator('label').filter({ hasText: 'Salary typeSelectHourlyDailyMonthlyAnnualSelect' }).getByLabel('dropdown indicator'),
-    hourly: await page.getByLabel('HOURLY', { exact: true }),
-    daily: await page.getByLabel('DAILY', { exact: true }),
-    monthly: await page.getByLabel('MONTHLY', { exact: true }),
-    yearly: await page.getByLabel('YEARLY', { exact: true })
+    hourly: await page.getByLabel('Hourly', { exact: true }),
+    daily: await page.getByLabel('Daily', { exact: true }),
+    monthly: await page.getByLabel('Monthly', { exact: true }),
+    yearly: await page.getByLabel('Yearly')
   },  
   minimumSalary: await page.locator(`//input[@name='minimumSalary']`),
   maximumSalary: await page.locator(`//input[@name='maximumSalary']`),
@@ -71,11 +71,11 @@ export const createJobForm = async (page) => ({
   // Employment Type value: FULL_TIME, PART_TIME, CONTRACT, INTERNSHIP, FREELANCE
   employmentType : {
     empoymentTypeContainer: await page.locator('label').filter({ hasText: 'Employment type *' }).getByLabel('dropdown indicator'),
-    internship :await page.getByLabel('INTERNSHIP', { exact: true }),
-    fullTime : await page.getByLabel('FULL_TIME'),
-    partTime: await page.getByLabel('PART_TIME'),
-    contract: await page.getByLabel('CONTRACT', { exact: true }),
-    freelance: await page.getByLabel('FREELANCE', { exact: true })
+    internship :await page.getByLabel('Internship', { exact: true }),
+    fullTime : await page.getByLabel('FullTime'),
+    partTime: await page.getByLabel('PartTime'),
+    contract: await page.getByLabel('Contract', { exact: true }),
+    freelance: await page.getByLabel('Freelance', { exact: true })
   },
 
 
@@ -107,65 +107,65 @@ export const createJobForm = async (page) => ({
     EDICopy: await page.getByText('Select which questions you'),
     EDIList: [
       {
-        dateOfBirth: await page.locator('li').filter({ hasText: 'Checkbox fieldDate of birth' }).locator('span').first(),
+        dateOfBirth: await page.locator('li').filter({ hasText: 'Date of birth' }).locator('span')
       },
       {
-        ethnicity: await page.locator('li').filter({ hasText: 'Checkbox fieldWhich of the following best describes your ethnicity?Response' }).locator('span').first(),
+        ethnicity: await page.locator('li').filter({ hasText: 'Which of the following best describes your ethnicity?Response options' }).locator('span')
       },
       {
-        gender: await page.locator('li').filter({ hasText: 'Checkbox fieldWhich of the following genders do you identify as?Response options' }).locator('span').first()
+        gender: await page.locator('li').filter({ hasText: 'Which of the following genders do you identify as?Response options' }).locator('span')
       },
       {
-      sexualOrientatoin: await page.locator('li').filter({ hasText: 'Checkbox fieldWhich of the following best describes your sexual orientation?' }).locator('span').first()
+      sexualOrientatoin: await page.locator('li').filter({ hasText: 'Which of the following best describes your sexual orientation?Response options' }).locator('span')
       },
       {
-        disability: await page.locator('li').filter({ hasText: 'Checkbox fieldDo you consider' }).locator('span').first()
+        disability: await page.locator('li').filter({ hasText: 'Do you consider yourself to' }).locator('span')
       },
       {
-        neurodiverse: await page.locator('li').filter({ hasText: 'Checkbox fieldDo you have any' }).locator('span').first()
+        neurodiverse: await page.locator('li').filter({ hasText: 'Do you have any of the' }).locator('span')
       },
       {
-        religion: await page.locator('li').filter({ hasText: 'Checkbox fieldWhich of these' }).locator('span').first()
+        religion: await page.locator('li').filter({ hasText: 'Which of these best describes' }).locator('span')
       },
       {
-        school: await page.locator('li').filter({ hasText: 'Checkbox fieldWhat type of' }).locator('span').first()
+        school: await page.locator('li').filter({ hasText: 'What type of school did you' }).locator('span')
       },
       {
-        meal: await page.locator('li').filter({ hasText: 'Checkbox fieldWere you' }).locator('span').first()
+        meal: await page.locator('li').filter({ hasText: 'Were you eligible for free' }).locator('span')
       }
     ],
     reponseList: [
       {
-        ethnicity: await page.locator('li').filter({ hasText: 'Checkbox fieldWhich of the following best describes your ethnicity?Response' }).getByRole('button'),
-        responseOverlay: await page.getByText('Which of the following best describes your ethnicity?Asian - ChineseAsian -')
+        ethnicity: await page.locator('li').filter({ hasText: 'Which of the following best describes your ethnicity?Response options' }).getByRole('button'),
+        responseOverlay: await page.getByRole('heading', { name: 'Which of the following best' })
       },
       {
-        gender: await page.locator('li').filter({ hasText: 'Checkbox fieldWhich of the following genders do you identify as?Response options' }).getByRole('button'),
-        responseOverlay: await page.getByText('Which of the following genders do you identify as?FemaleMaleNon-binary /')
+        gender: await page.locator('li').filter({ hasText: 'Which of the following genders do you identify as?Response options' }).getByRole('button'),
+        responseOverlay: await page.getByRole('heading', { name: 'Which of the following' })
       },
       {
-        sexualOrientatoin: await page.locator('li').filter({ hasText: 'Checkbox fieldWhich of the following best describes your sexual orientation?' }).getByRole('button'),
-        responseOverlay: await page.getByText('Which of the following best describes your sexual orientation?BisexualGay or')
+        sexualOrientatoin: await page.locator('li').filter({ hasText: 'Which of the following best describes your sexual orientation?Response options' }).getByRole('button'),
+        responseOverlay: await page.getByRole('heading', { name: 'Which of the following best' })
       },
       {
-        disability: await page.locator('li').filter({ hasText: 'Checkbox fieldDo you consider' }).getByRole('button'),
-        responseOverlay: await page.locator('li').filter({ hasText: 'Checkbox fieldDo you consider' }).getByRole('button')
+        disability: await page.locator('li').filter({ hasText: 'Do you consider yourself to' }).getByRole('button'),
+        responseOverlay: await page.getByRole('heading', { name: 'Do you consider yourself to' })
       },
       {
-        neurodiverse: await page.locator('li').filter({ hasText: 'Checkbox fieldDo you have any' }).getByRole('button'),
-        responseOverlay: await page.getByText('Do you have any of the following Neurodiverse conditions?Attention Deficit')
+        neurodiverse: await page.locator('li').filter({ hasText: 'Do you have any of the' }).getByRole('button'),
+        responseOverlay: await page.getByRole('heading', { name: 'Do you have any of the' })
       },
       {
-        religion: await page.locator('li').filter({ hasText: 'Checkbox fieldWhich of these' }).getByRole('button'),
-        responseOverlay: await page.getByText('Which of these best describes your religion?No')
+        religion: await page.locator('li').filter({ hasText: 'Which of these best describes' }).getByRole('button'),
+        responseOverlay: await page.getByRole('heading', { name: 'Which of these best describes' })
       },
       {
-        school: await page.locator('li').filter({ hasText: 'Checkbox fieldWhat type of' }).getByRole('button'),
-        responseOverlay: await page.getByText('What type of school did you mainly attend between ages 11-16?Selective state')
+        school: await page.locator('li').filter({ hasText: 'What type of school did you' }).getByRole('button'),
+        responseOverlay: await page.getByRole('heading', { name: 'What type of school did you' })
       },
       {
-        meal: await page.locator('li').filter({ hasText: 'Checkbox fieldWere you' }).getByRole('button'),
-        responseOverlay: await page.getByText('Were you eligible for free school meals?YesNoNot applicable (finished school')
+        meal: await page.locator('li').filter({ hasText: 'Were you eligible for free' }).getByRole('button'),
+        responseOverlay: await page.getByRole('heading', { name: 'Were you eligible for free' })
       }
 
     ],
@@ -180,13 +180,18 @@ export const createJobForm = async (page) => ({
     customQADropdown: {
       createYourOwn: {
         dropDown: await page.getByText('Create your own', { exact: true }),
-        inputField: await page.getByLabel('Text field'),
+        inputField: await page.getByLabel('', { exact: true }),
         addButton: await page.getByRole('button', { name: 'Add' })
       },
-      preDefindQuestion1: await page.getByText('Why would you like to join')
+      preDefindQuestion1: await page.getByText('Why would you like to join'),
+      preDefindQuestion2: await page.getByText('Who inspires you and why?'),
+      preDefindQuestion3: await page.getByText('What sustainable initiative'),
+      preDefindQuestion4: await page.getByText('What new technology or'),
+      preDefindQuestion5: await page.getByText('What trend do you think will')
     },
-    kebabMenu1: await page.getByLabel('button').nth(2),
-    kebabMenu2: await page.getByLabel('button').nth(4),
+    kebabMenu: function(page, number) {
+      return page.locator(`div:nth-child(${number}) > .Card_container__zFPvi > .Card_card__HRJrl > .Card_cardHeader__VU_0G > .TheEditQuestionnaireDropdown_question__UBbKm > .ContextMenu_contextMenu__QOxr7 > .ContextMenu_iconMore__SaVsX`);
+    },
     answerRequrement: {
       copy: await page.getByText('Specify the type of media'),
       answerRequrementButton: await page.getByRole('button', { name: 'Answer requirements' }),
@@ -198,7 +203,7 @@ export const createJobForm = async (page) => ({
         {
           name: 'video(both)',
           locator: await page.getByRole('row', { name: 'Video Upload a video, or add' }).locator('span').first()
-        },
+        }/*, not yet implemented on beta
         {
           name: 'video upload',
           locator: await page.getByRole('row', { name: 'Video upload Video upload' }).locator('span').first()
@@ -206,7 +211,7 @@ export const createJobForm = async (page) => ({
         {
           name: 'video link',
           locator: await page.getByRole('row', { name: 'Video via a weblink Add video' }).locator('span').first()
-        },
+        }*/,
         {
           name: 'portfolio',
           locator: await page.getByRole('row', { name: 'Portfolio Upload a PDF or add' }).locator('span').first()
@@ -217,15 +222,15 @@ export const createJobForm = async (page) => ({
         },
         {
           name: 'weblink',
-          locator: await page.getByRole('row', { name: 'Weblink Add a weblink. hidden' }).locator('span').first()
+          locator: await page.getByRole('row', { name: 'Weblink Add a weblink.' }).locator('span')
         },
         {
           name: 'audio',
-          locator: await page.getByRole('row', { name: 'Audio Upload an audio file.' }).locator('span').first()
+          locator: await page.getByRole('row', { name: 'Audio Upload an audio file.' }).locator('span')
         },
         {
           name: 'image',
-          locator: await page.getByRole('row', { name: 'Image Upload an image file.' }).locator('span').first()
+          locator: await page.getByRole('row', { name: 'Image Upload an image file.' }).locator('span')
         }
       ],
       saveButton: await page.locator('#modal-lightbox').getByRole('button', { name: 'Save' }),
@@ -242,33 +247,33 @@ export const createJobForm = async (page) => ({
     toggle: [
       {
         name: 'work experience',
-        locator: await page.getByRole('row', { name: 'Work experience Checkbox' }).locator('span').first()
+        locator: await page.getByRole('row', { name: 'Work experience' }).locator('span').first()
       },
       {
         name: 'psychometrics',
-        locator: await page.getByRole('row', { name: 'Psychometrics Checkbox field' }).locator('span').first()
+        locator: await page.getByRole('row', { name: 'Psychometrics' }).locator('span').first()
       },
       {
         name: 'education',
-        locator: await page.getByRole('row', { name: 'Education Checkbox field' }).locator('span').first()
+        locator: await page.getByRole('row', { name: 'Education' }).locator('span').first()
       },
       {
         name: 'skills',
-        locator: await page.getByRole('row', { name: 'Skills Checkbox field' }).locator('span').first()
+        locator: await page.getByRole('row', { name: 'Skills' }).locator('span').first()
       }
     ],
     toggleForMedia: [
       {
         name: 'projects',
-        locator: await page.getByRole('row', { name: 'Projects Checkbox field' }).locator('span').first(),
+        locator: await page.getByRole('row', { name: 'Projects' }).locator('span').first(),
       },
       {
         name: 'media cards',
-        locator: await page.getByRole('row', { name: 'Media cards Checkbox field' }).locator('span').first()
+        locator: await page.getByRole('row', { name: 'Media cards' }).locator('span').first()
       },
       {
         name: 'Q&A',
-        locator: await page.getByRole('row', { name: 'Q&A Checkbox field Checkbox' }).locator('span').first()
+        locator: await page.getByRole('row', { name: 'Q&A' }).locator('span').first()
       }
     ]
   },
@@ -289,51 +294,51 @@ export const createJobForm = async (page) => ({
     checkBox: [
       {
         name: 'profile picture',
-        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldProfile picture' }).locator('span').first()
+        locator: await page.locator('li').filter({ hasText: 'Profile picture' }).locator('span')
       },
       {
         name: 'name & pronouns',
-        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldName & pronouns' }).locator('span').first()
+        locator: await page.locator('li').filter({ hasText: 'Name & pronouns' }).locator('span')
       },
       {
         name: 'Bio',
-        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldBio location,' }).locator('span').first()
+        locator: await page.locator('li').filter({ hasText: 'Bio location,' }).locator('span')
       },
       {
         name: 'social media',
-        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldSocial media &' }).locator('span').first()
+        locator: await page.locator('li').filter({ hasText: 'Social media &' }).locator('span')
       },
       {
         name: 'psychometrics',
-        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldPsychometrics' }).locator('span').first()
+        locator: await page.locator('li').filter({ hasText: 'Psychometrics' }).locator('span')
       },
       {
         name: 'custom question',
-        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldCustom questions' }).locator('span').first()
+        locator: await page.locator('li').filter({ hasText: 'Custom questions' }).locator('span')
       },
       {
         name: 'education',
-        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldEducation' }).locator('span').first()
+        locator: await page.locator('li').filter({ hasText: 'Education' }).locator('span')
       },
       {
         name: 'work experience',
-        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldWork experience' }).locator('span').first()
+        locator: await page.locator('li').filter({ hasText: 'Work experience' }).locator('span')
       },
       {
         name: 'projects',
-        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldProjects' }).locator('span').first()
+        locator: await page.locator('li').filter({ hasText: 'Projects' }).locator('span')
       },
       {
         name: 'skills',
-        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldSkills' }).locator('span').first()
+        locator: await page.locator('li').filter({ hasText: 'Skills' }).locator('span')
       },
       {
         name: 'media cards',
-        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldMedia cards' }).locator('span').first()
+        locator: await page.locator('li').filter({ hasText: 'Media cards' }).locator('span')
       },
       {
         name: 'Q&A',
-        locator: await page.locator('li').filter({ hasText: 'Checkbox fieldQ&As' }).locator('span').first()
+        locator: await page.locator('li').filter({ hasText: 'Q&As' }).locator('span')
       }
     ]
   },

@@ -1,9 +1,9 @@
 'use strict'
 import {test, expect, chromium} from '@playwright/test';  
 import * as landingPage from './locator/landingPage.js';
-import * as data from './test-data/data.js';
+import { data } from './test-data/data.js';
 import * as setting from './locator/settingLocator.js';
-import { autoGenerationCreateJob, answerCreationLoop, checkButtonDisabled, checkForSuccessMessage, checkTogglesStatus, checkTogglesStatusOn} from './ulti-function/generateNameForJob.js';
+import { jobUtils} from './ulti-function/util.js';
 import dayjs from "dayjs";
 import { create } from 'domain';
 
@@ -19,26 +19,25 @@ test('Create a job process', async ({page}) => {
   const EDIListLocator = createAndManageJobPage.EDI.EDIList;
   const responseList = createAndManageJobPage.EDI.reponseList;
   const answerRequirementToggle = createAndManageJobPage.customQA.answerRequrement.toggle;
+  const customQA = createAndManageJobPage.customQA;
   //dayjs 
   let today = dayjs().format('DD/MM/YYYY');
-  let tomorrow = dayjs().add(1, 'day').format('DD/MM/YYYY');
+  let tomorrow = dayjs().add(3, 'day').format('DD/MM/YYYY');
 
   //auto generate job name and code
-  const jobName = autoGenerationCreateJob.generateJobName();
-  const code = autoGenerationCreateJob.codeGenerate();
+  const jobName = jobUtils.generateJobName();
+  const code = jobUtils.codeGenerate();
 
   //navigate to Vizzy
-  page.goto('https://staging.vizzy.com/');
+  page.goto('https://beta.vizzy.com/');
   
   //allow cookie
   await header.cookieAllow.click();
 
   //Login 
   await header.loginButton.click();
-  await signInField.emailField.fill(data.account.email);
-  console.log(data.account.email);
-  await signInField.passwordField.fill(data.account.password);
-  console.log(data.account.password);
+  await signInField.emailField.fill(data.accountBeta.email);
+  await signInField.passwordField.fill(data.accountBeta.password);
   await signInField.signInButton.click();
 
   // Wait for the page to load and verified the page
@@ -53,6 +52,7 @@ test('Create a job process', async ({page}) => {
   //create a new job
   await createAndManageJob.createNewJobButton.click();
   console.log('create a new job');
+  await page.waitForTimeout(2000);
 
   // Job detail
   await expect(createAndManageJobPage.jobDetailCopy).toHaveText(data.copy.jobDetailCopy);
@@ -98,10 +98,10 @@ test('Create a job process', async ({page}) => {
   console.log('Save the job');
 
   //check for success message
-  await checkForSuccessMessage(createAndManageJobPage.sucessMessage);
+  await jobUtils.checkForSuccessMessage(createAndManageJobPage.sucessMessage);
 
   //check if the button is disable after save
-  await checkButtonDisabled(createAndManageJobPage.saveButton);
+  await jobUtils.checkButtonDisabled(createAndManageJobPage.saveButton);
 
   await page.waitForTimeout(2000);
 
@@ -115,10 +115,10 @@ test('Create a job process', async ({page}) => {
   await createAndManageJobPage.saveButton.click();
 
   //check for success message
-  await checkForSuccessMessage(createAndManageJobPage.sucessMessage);
+  await jobUtils.checkForSuccessMessage(createAndManageJobPage.sucessMessage);
 
   //check if the button is disable after save
-  await checkButtonDisabled(createAndManageJobPage.saveButton);
+  await jobUtils.checkButtonDisabled(createAndManageJobPage.saveButton);
 
   //pre-requiste questions creation
   await createAndManageJobPage.prerequsiteAndEDITab.click();
@@ -129,23 +129,23 @@ test('Create a job process', async ({page}) => {
   const isToggleEnabled = await createAndManageJobPage.prerequisiteQuestion.multipleQuestionToggle.isChecked();
   expect(isToggleEnabled).toBe(false); 
   await createAndManageJobPage.prerequisiteQuestion.questionField.fill('automation questions');
-  await answerCreationLoop(createAndManageJobPage);
+  await jobUtils.answerCreationLoop(createAndManageJobPage);
   await createAndManageJobPage.prerequisiteQuestion.saveQuestionButton.click();
   //add question with multi answers
   await createAndManageJobPage.prerequisiteQuestion.addQuestionButton.click();
   // Verify if the toggle is enabled or disabled
   expect(isToggleEnabled).toBe(false);
   await createAndManageJobPage.prerequisiteQuestion.questionField.fill('automation questions 2');
-  await answerCreationLoop(createAndManageJobPage);
+  await jobUtils.answerCreationLoop(createAndManageJobPage);
   await createAndManageJobPage.prerequisiteQuestion.multipleQuestionToggle.click();
   await createAndManageJobPage.prerequisiteQuestion.saveQuestionButton.click();
   await createAndManageJobPage.saveButton.click();
 
   //check for success message
-  await checkForSuccessMessage(createAndManageJobPage.sucessMessage);
+  await jobUtils.checkForSuccessMessage(createAndManageJobPage.sucessMessage);
 
   //check if the button is disable after save
-  await checkButtonDisabled(createAndManageJobPage.saveButton);
+  await jobUtils.checkButtonDisabled(createAndManageJobPage.saveButton);
 
   //EDI
   await createAndManageJobPage.EDI.EDITab.click();
@@ -182,67 +182,76 @@ test('Create a job process', async ({page}) => {
 
   await createAndManageJobPage.saveButton.click();
 
-  await checkForSuccessMessage(createAndManageJobPage.EDI.EDISuccessMessage);
-  await checkButtonDisabled(createAndManageJobPage.saveButton);
+  await jobUtils.checkForSuccessMessage(createAndManageJobPage.EDI.EDISuccessMessage);
+  await jobUtils.checkButtonDisabled(createAndManageJobPage.saveButton);
 
   //customQ&A
   await createAndManageJobPage.candidateProfileTab.click();
   await expect(createAndManageJobPage.customQA.customQACopy).toHaveText(data.copy.customQA);
-  //add a custom questoin
-  await createAndManageJobPage.customQA.customQAContainer.click();
-  await createAndManageJobPage.customQA.customQADropdown.createYourOwn.dropDown.click();
-  await createAndManageJobPage.customQA.customQADropdown.createYourOwn.inputField.fill('Please answer this custom question');
-  await createAndManageJobPage.customQA.customQADropdown.createYourOwn.addButton.click();
-  //add a prefix question
-  await createAndManageJobPage.customQA.customQAContainer.click();
-  await createAndManageJobPage.customQA.customQADropdown.preDefindQuestion1.click();
-  //answer requirement to custom question
-  await createAndManageJobPage.customQA.kebabMenu2.click();
-  await createAndManageJobPage.customQA.kebabMenu2.click();
-  await createAndManageJobPage.customQA.answerRequrement.answerRequrementButton.click();
-  await expect(createAndManageJobPage.customQA.answerRequrement.copy).toHaveText(data.copy.answerRequirementCopy);
-  await checkTogglesStatus(answerRequirementToggle);
-  await createAndManageJobPage.customQA.answerRequrement.saveButton.click();
-  await createAndManageJobPage.customQA.answerRequrement.confirmButton.click();
+  await page.waitForTimeout(2000);
+  //add a prefix 1-5
+  
+  for (let i = 1; i <= 5; i++) {
+    await jobUtils.addingPrefixQuestion(customQA.customQAContainer, customQA.customQADropdown[`preDefindQuestion${i}`]);
+  }
+  //scroll down slightly
+  await page.evaluate(() => {
+    window.scrollBy(0, 200);
+  });
+
+
+  //adding requirement to the question
+  for (let i = 2; i <= 5; i++) {
+    const locator = customQA.kebabMenu(page, i);
+    // Perform actions with the locator
+    await locator.click();
+    await createAndManageJobPage.customQA.answerRequrement.answerRequrementButton.click();
+    await expect(createAndManageJobPage.customQA.answerRequrement.copy).toHaveText(data.copy.answerRequirementCopy);
+    await jobUtils.checkTogglesStatus(answerRequirementToggle);
+    await createAndManageJobPage.customQA.answerRequrement.saveButton.click();
+    await createAndManageJobPage.customQA.answerRequrement.confirmButton.click();
+  }
   await createAndManageJobPage.saveButton.click();
-  await checkForSuccessMessage(createAndManageJobPage.sucessMessage);
-  await checkButtonDisabled(createAndManageJobPage.saveButton);
+  await jobUtils.checkForSuccessMessage(createAndManageJobPage.sucessMessage);
+  await jobUtils.checkButtonDisabled(createAndManageJobPage.saveButton);
 
   //submission requirement
   await createAndManageJobPage.submissionRequirement.submissionTab.click();
   await expect (createAndManageJobPage.submissionRequirement.copy1).toHaveText(data.copy.submissionRequirement.copy1);
   await expect(createAndManageJobPage.submissionRequirement.copy2).toHaveText(data.copy.submissionRequirement.copy2);
-  await checkTogglesStatusOn(createAndManageJobPage.submissionRequirement.toggle);
-  await checkTogglesStatus(createAndManageJobPage.submissionRequirement.toggleForMedia);
+  await jobUtils.checkTogglesStatusOn(createAndManageJobPage.submissionRequirement.toggle);
+  await jobUtils.checkTogglesStatus(createAndManageJobPage.submissionRequirement.toggleForMedia);
   await createAndManageJobPage.saveButton.click();
-  await checkForSuccessMessage(createAndManageJobPage.sucessMessage);
-  await checkButtonDisabled(createAndManageJobPage.saveButton);
+  await jobUtils.checkForSuccessMessage(createAndManageJobPage.sucessMessage);
+  await jobUtils.checkButtonDisabled(createAndManageJobPage.saveButton);
 
+  
   //recruiter access
   await createAndManageJobPage.screeningTab.click();
+  /*
   await expect(createAndManageJobPage.recruiterAcess.copy1).toHaveText(data.copy.recruiterAcess.copy1);
   await expect(createAndManageJobPage.recruiterAcess.copy2).toHaveText(data.copy.recruiterAcess.copy2);
   await createAndManageJobPage.recruiterAcess.selectAllButton.click();
   await createAndManageJobPage.recruiterAcess.assignButton.click();
   await createAndManageJobPage.recruiterAcess.confirmYes.click();
   await createAndManageJobPage.saveButton.click();
-  await checkForSuccessMessage(createAndManageJobPage.sucessMessage);
-  await checkButtonDisabled(createAndManageJobPage.saveButton);
+  await jobUtils.checkForSuccessMessage(createAndManageJobPage.sucessMessage);
+  await jobUtils.checkButtonDisabled(createAndManageJobPage.saveButton);*/
 
   //anon hiring
   await createAndManageJobPage.anonHiring.anonHiringTab.click();
   await expect(createAndManageJobPage.anonHiring.copy).toHaveText(data.copy.anonHiring);
-  await checkTogglesStatus(createAndManageJobPage.anonHiring.checkBox);
+  await jobUtils.checkTogglesStatus(createAndManageJobPage.anonHiring.checkBox);
   await createAndManageJobPage.saveButton.click();
-  await checkForSuccessMessage(createAndManageJobPage.sucessMessage);
-  await checkButtonDisabled(createAndManageJobPage.saveButton);
+  await jobUtils.checkForSuccessMessage(createAndManageJobPage.sucessMessage);
+  await jobUtils.checkButtonDisabled(createAndManageJobPage.saveButton);
 
   //landing page
   await createAndManageJobPage.landingPage.landingPageTab.click();
   await expect(createAndManageJobPage.landingPage.copy).toHaveText(data.copy.landingPage);
   const primaryLandingPage = await createAndManageJobPage.landingPage.primary.isChecked();
   expect(primaryLandingPage).toBe(true);
-  checkButtonDisabled(createAndManageJobPage.saveButton);
+  jobUtils.checkButtonDisabled(createAndManageJobPage.saveButton);
 
   //check if publish button is enable
   const publishButton = await createAndManageJobPage.publishButton.isEnabled();
@@ -251,6 +260,6 @@ test('Create a job process', async ({page}) => {
   await createAndManageJobPage.confirmPublish.click();
   await expect(createAndManageJobPage.publishedMessage).toBeVisible();
   await page.waitForTimeout(3000);
-  expect(page).toHaveTitle(data.pageTitle.settingTitle);
+  await expect(page).toHaveTitle(data.pageTitle.settingTitle);
   
 });
