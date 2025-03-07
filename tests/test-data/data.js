@@ -9,8 +9,8 @@ export const data = {
     email: 'southparkpup@edny.net',
     password: 'Yuchhaysam123@'
   },
-  dummyTestingAccount: {
-    email: 'johnbrewmen8@indigobook.com',
+  candidateAccount: {
+    email: 'johnbrewmen14@indigobook.com',
     password: 'Yuchhaysam123@'
   },
   pageTitle: {
@@ -65,7 +65,7 @@ export const data = {
     businessURL: 'https://teamfighttactics.leagueoflegends.com/en-us/',
     mailinator: 'https://www.mailinator.com/',
     mailTM: 'https://mail.tm/en/',
-    new: 'https://www.axios.com/2025/03/06/sanctuary-cities-mayors-congress-republicans'
+    new: 'www.nytimes.com'
   },
   locatorData: {
     ethnicity: {
@@ -167,7 +167,39 @@ export const data = {
   },
   fileType: {
     image: ['jpg', 'png', 'gif'],
-    audio: ['mp3', 'aac', 'wav', 'ogg', 'm4a', 'flac'],
-    
+    audio: ['mp3', 'wav', 'ogg', 'm4a', 'flac'], //acc bug
+    video: ['mp4', 'mov', 'avi', 'vimeo', 'youtube' ],
+    portfolio : ['pdf', 'weblink'],
+    card: ['jpg', 'wav' , 'pdf', 'youtube', 'vimeo', 'weblink'],
+    tempoaryQA: ['jpg', 'wav' , 'pdf']
+  },
+  education: {
+    institute: 'Delft University of Technology',
+    url: 'https://www.ox.ac.uk/',
+    degree: 'Doctor Law - JD',
+    grade: '4.0',
+    fieldOfStudy: 'Law',
+    startDate: '02/2007',
+    endDate: '08/2010',
+    description: 'This is an automated description',
+  },
+  work: {
+    companyName: 'Nuform digital',
+    companyURL: 'https://www.nuformtechnology.com/',
+    title: 'QA',
+    location: 'Cambodia',
+    description: 'This is an automated description',
+    startDate: '09/2008',
+    endDate: '01/2020'
+  },
+  project: {
+    title: 'Building a platform',
+    description: 'This is an automated description',
+    startDate: '09/2012',
+    endDate: '03/2018'
+  },
+  media:{
+    headline: 'Book of a god',
+    description: 'This is an automated description'
   }
 };

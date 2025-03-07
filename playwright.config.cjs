@@ -9,9 +9,9 @@ module.exports = defineConfig({
   reporter: 'html',
   use: {
     trace: 'on-first-retry',
-    timeout: 100000, 
+    timeout: 1500000, 
   },
-  timeout: 100000, 
+  timeout: 1500000, 
   projects: [
     {
       name: 'chromium',

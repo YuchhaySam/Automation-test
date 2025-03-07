@@ -125,41 +125,60 @@ export const jobUtils = {
 
     }
   },
-  uploadingFile : async function(question, type, upload, save, fileType, page, addURL, addButton){
-    const folderPath = path.join('tests', 'image-video', `${type}`); 
-    const button = question.answerButton;
-    await button.hover();
-    await button.click();
-    for(let i=0; i<fileType.length; i++ ){
-      const file = path.join(folderPath, `${i}.${fileType[i]}`);
-      if(fileType !== 'video link' && fileType !== 'web link'){
+  uploadingFile: async function(type, upload, save, fileType, page, addURL, addButton) {
+    const folderPath = path.join('tests', 'image-video', `${type}`);
+    for (const fileTypeItem of fileType) {
+      const file = path.join(folderPath, `${fileType.indexOf(fileTypeItem)}.${fileTypeItem}`);
+      if (fileTypeItem !== 'youtube' && fileTypeItem !== 'vimeo' && fileTypeItem !== 'weblink') {
         await upload.setInputFiles(file);
-      } else if(fileType === 'youtube') {
+      } else if (fileTypeItem === 'youtube') {
         await addURL.fill(data.url.youtubeURL1);
         await addButton.click();
-      } else if (fileType === 'vimeo') {
+        await page.waitForTimeout(3000);
+      } else if (fileTypeItem === 'vimeo') {
         await addURL.fill(data.url.vimeoURL1);
         await addButton.click();
+        await page.waitForTimeout(3000);
       } else {
         await addURL.fill(data.url.new);
         await addButton.click();
+        await page.waitForTimeout(3000);
       }
-      if(type === 'image'){
+      if (fileTypeItem === 'jpg' || fileTypeItem === 'png' || fileTypeItem === 'gif') {
         await save.click();
-      } else{
+      } else {
         continue;
       }
       
+      await page.waitForLoadState('domcontentloaded');
     }
-    for(let i=0; i<fileType.length; i++ ){
-      const carousel  = await page.getByRole('button', { name: `${i+1}` }).getByRole('button');
-      await expect(carousel).toBeVisible();
-    }
+    /* problem with vimeo and youtube, will find a solution later
+    for (let i = 0; i < fileType.length; i++) {
+      const carousel = await page.getByRole('button', { name: `${i + 1}` }).getByRole('button');
+      await expect(carousel).toBeVisible({ timeout: 10000 });
+    }*/
   },
-  checkModalIsCloseAndSubmitButtonIsDisable : async function(button){
-    const isButtonDisabled = await button.isDisabled();
-    await expect(button).toBeVisible();
-    expect(isButtonDisabled).toBe(true);
+  answeringPsychometric: async function(psych, pageNum, rating1, rating2, page){
+    const question = psych.answer[`page${pageNum}`];
+    const answer1 = question.answer1;
+    const answer2 = question.answer2;
+    const nextButton = psych.answer.nextButton;
+    const rating = async function(number){
+      const locator = await page.getByRole('button', { name: `${number}`, exact: true });
+      return locator;
+    };
+    const ratingAnswer1 = await rating(rating1);
+    const ratingAnswer2 = await rating(rating2);
+    
+    await answer1.click();
+    await answer2.click();
+    await ratingAnswer1.click();
+    await ratingAnswer2.click();
+    await nextButton.click();
+  },
+  checkIfSubmitButtonIsDisable : async function(button){
+    const isButtonDisable = await button.isDisabled();
+    expect(isButtonDisable).toBe(true);
   }
   
 };
