@@ -57,7 +57,8 @@ export const data = {
   url: {
     jobSpecificURLStaging: 'https://staging.vizzy.com/jobs/@Cavemans/c/cjjbcfz',
     jobSpecificURLBeta: 'https://beta.vizzy.com/jobs/@demoPinpoint/c/g5vsfhx',
-    vizzy: 'https://staging.vizzy.com/',
+    vizzyStaging: 'https://staging.vizzy.com/',
+    vizzyBeta: 'https://beta.vizzy.com/',
     youtubeURL1: 'https://www.youtube.com/watch?v=GPZ2hPn9rEQ',
     youtubeURL2: 'https://www.youtube.com/watch?v=MxfbUPpwDlw',
     vimeoURL1: 'https://vimeo.com/1062256004',

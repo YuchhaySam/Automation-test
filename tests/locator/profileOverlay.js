@@ -5,7 +5,7 @@ export const profile = async (page) => ({
     hideConfirmationCopy: await page.getByText('Please note: if this content'),
     hideConfirmationButton: await page.getByRole('button', { name: 'Hide' }),
     saveButton: await page.getByRole('button', { name: 'Save' }),
-    addContent: await page.getByRole('button', { name: 'Content' }),
+    addContent: await page.locator(`//button[normalize-space()='Content']`),
     API: 'https://backend-beta.vizzy.com/graphql',
     saveImage: await page.getByRole('button', { name: 'Save' }).nth(1),
     previewButton: await page.getByRole('button', { name: 'Preview' }),

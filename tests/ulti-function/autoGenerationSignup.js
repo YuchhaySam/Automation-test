@@ -18,7 +18,7 @@ export const autoGenerationSignup ={
   //password auto generation
   passwordAutoGenerate: function(){
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const specialCharacters = '!@#$%^&*()_+{}:"<>?|[];\',./`~';
+    const specialCharacters = '!@#$%^&*_"<>?[];\',./`~';
     let password = '';
     // Ensure at least one capital letter
     password += characters.charAt(Math.floor(Math.random() * 26)); 

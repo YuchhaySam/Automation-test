@@ -152,7 +152,7 @@ export const jobUtils = {
       
       await page.waitForLoadState('domcontentloaded');
     }
-    /* problem with vimeo and youtube, will find a solution later
+    /* problem with vimeo and youtube container selector, will find a solution later
     for (let i = 0; i < fileType.length; i++) {
       const carousel = await page.getByRole('button', { name: `${i + 1}` }).getByRole('button');
       await expect(carousel).toBeVisible({ timeout: 10000 });
@@ -176,9 +176,9 @@ export const jobUtils = {
     await ratingAnswer2.click();
     await nextButton.click();
   },
-  checkIfSubmitButtonIsDisable : async function(button){
+  checkIfSubmitButtonIsDisable : async function(button, boonleanValue){
     const isButtonDisable = await button.isDisabled();
-    expect(isButtonDisable).toBe(true);
+    expect(isButtonDisable).toBe(boonleanValue);
   }
   
 };

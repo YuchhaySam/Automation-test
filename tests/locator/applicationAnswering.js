@@ -5,6 +5,7 @@ export const applicationAnswering = async (page) =>({
     applyButton: await page.getByRole('button', { name: 'Apply' }),
     nextButton: await page.getByRole('button', { name: 'Next' }),
     continueButton: await page.getByRole('button', { name: 'Continue' }),
+    skipButton: await page.getByRole('button', { name: 'Skip video' }),
     answer:{
         question1: async (answer) => {
             const locator = await page.locator('span').filter({ hasText: `${answer}` }).first();

@@ -1,7 +1,7 @@
-import { test, expect, chromium } from '@playwright/test';
-import { headerLocators, signUpFieldsLocators, mailinatorLocators } from './locator/landingPage.js';
-import { autoGenerationSignup } from './ulti-function/autoGenerationSignup.js';
-import { testcase } from './ulti-function/reusableTestCase.js';
+'use strict'
+import { test, expect, chromium } from '@playwright/test';  
+import { testcase } from '../ulti-function/reusableTestCase.js';
+import { autoGenerationSignup } from '../ulti-function/autoGenerationSignup.js';
 
 test('Sign up page', async () => {
   const browser = await chromium.launch(); // Launch Chrome (Chromium)
@@ -21,6 +21,7 @@ test('Sign up page', async () => {
   // Navigate to vizzy and fill the sign-up form
   console.log('Navigating to Vizzy...');
   await vizzy.goto('https://staging.vizzy.com/');
+  await header.cookieAllow.click();
   await header.signUpButton.click();
 
   await testcase.signUpStaging(signUpField, autoGeneration, mailinator, mailinatorField, email, password, lastName);

@@ -1,11 +1,10 @@
 'use strict'
 import {test, expect, chromium} from '@playwright/test';  
-import * as landingPage from './locator/landingPage.js';
-import { data } from './test-data/data.js';
-import * as setting from './locator/settingLocator.js';
-import { jobUtils} from './ulti-function/util.js';
+import * as landingPage from '../locator/landingPage.js';
+import { data } from '../test-data/data.js';
+import * as setting from '../locator/settingLocator.js';
+import { jobUtils } from '../ulti-function/util.js';
 import dayjs from "dayjs";
-import { create } from 'domain';
 
 
 test('Create a job process', async ({page}) => {
@@ -29,15 +28,15 @@ test('Create a job process', async ({page}) => {
   const code = jobUtils.codeGenerate();
 
   //navigate to Vizzy
-  page.goto('https://beta.vizzy.com/');
+  page.goto(data.url.vizzyStaging);
   
   //allow cookie
   await header.cookieAllow.click();
 
   //Login 
   await header.loginButton.click();
-  await signInField.emailField.fill(data.accountBeta.email);
-  await signInField.passwordField.fill(data.accountBeta.password);
+  await signInField.emailField.fill(data.accountStaging.email);
+  await signInField.passwordField.fill(data.accountStaging.password);
   await signInField.signInButton.click();
 
   // Wait for the page to load and verified the page

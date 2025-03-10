@@ -1,15 +1,14 @@
 'use strict'
-import {test, expect, chromium} from '@playwright/test';  
-import * as landingPageLocator from './locator/landingPage.js';
-import { data } from './test-data/data.js';
-import * as settingLocator from './locator/settingLocator.js';
-import * as applicationAnsweringLocator from './locator/applicationAnswering.js';
-import { testcase } from './ulti-function/reusableTestCase.js';
-
-import { autoGenerationSignup } from './ulti-function/autoGenerationSignup.js';
-import { jobUtils } from './ulti-function/util.js';
+import { test, expect, chromium } from '@playwright/test';  
+import * as landingPageLocator from '../locator/landingPage.js';
+import { data } from '../test-data/data.js';
+import * as settingLocator from '../locator/settingLocator.js';
+import * as applicationAnsweringLocator from '../locator/applicationAnswering.js';
+import { testcase } from '../ulti-function/reusableTestCase.js';
+import { autoGenerationSignup } from '../ulti-function/autoGenerationSignup.js';
+import { jobUtils } from '../ulti-function/util.js';
 import path from 'path';
-import * as profileOverlay from './locator/profileOverlay.js';
+import * as profileOverlay from '../locator/profileOverlay.js';
 
 test('applying job', async ()=>{
     //create browser
@@ -17,7 +16,6 @@ test('applying job', async ()=>{
     const context = await browser.newContext();
     const vizzy = await context.newPage();
     const mailinator = await context.newPage();
-    
     
     //declare variable for locator
     const header = await landingPageLocator.headerLocators(vizzy);
@@ -72,26 +70,28 @@ test('applying job', async ()=>{
     
 
     //paste in application URL
-    await vizzy.goto(data.url.jobSpecificURLBeta);
+    await vizzy.goto(data.url.jobSpecificURLStaging);
     await header.cookieAllow.click(); 
 
     //arrive on the landing page
     await expect(application.landingPage.getStartedButton).toBeVisible();
     await application.landingPage.getStartedButton.click();
 
-    /*//Sign up
-    await testcase.signUpStaging(signUpField, autoGenerationSignup, mailinator, mailinatorField, email, password, lastName);*/
-
+    /* no sign up for beta yet because it is still in an old version
+    //Sign up
+    await testcase.signUpStaging(signUpField, autoGenerationSignup, mailinator, mailinatorField, email, password, lastName);
+    */
+    
     //Sign in
     await signInField.signInButtonOnModal.click();
     await testcase.signIn(signInField.emailField, signInField.passwordField, data.candidateAccount.email, data.candidateAccount.password, signInField.signInButton);
 
     //move on to answering questions
-    await vizzy.waitForLoadState('networkidle');
+    await vizzy.waitForLoadState('domcontentloaded');
     await expect(vizzy).toHaveTitle(data.pageTitle.myApplication);
+
+    //click apply or continue
     await jobUtils.clickApplyOrContinue(vizzy);
-    
-    
     await application.nextButton.click();
 
     //pre-req question 1
@@ -150,22 +150,21 @@ test('applying job', async ()=>{
     await application.nextButton.click();
 
     //arive at bespoken page
-    /*await expect(signUpField.bespokenInputField).toBeVisible();
+    await expect(signUpField.bespokenInputField).toBeVisible();
     await signUpField.bespokenInputField.fill(lastName);
-    await application.nextButton.click(); */
-    
-    
+    await application.nextButton.click(); 
 
     //arrive on application overlay
     await vizzy.waitForLoadState();
     await expect(vizzy).toHaveTitle(data.pageTitle.myProfileTitle);
+    //await application.skipButton.click(); only valid for sign up
 
      // Bio card
     // Profile
     jobUtils.hoverAndClick(profile.bio.hoverElement, profile.bio.editBioButton);
     await bioOverLay.profilePhoto.container.click();
     await bioOverLay.profilePhoto.uploadPhoto.setInputFiles(image2);
-    //await bioOverLay.profilePhoto.saveButton.click(); bug at the moment.
+   // await profile.saveImage.click(); bug on beta
     await bioOverLay.profilePhoto.coverVideo.fill(data.url.vimeoURL1);
 
     // About you
@@ -192,11 +191,11 @@ test('applying job', async ()=>{
     await bioOverLay.socialPlatform.addButton.click();
     
     await profile.saveButton.click();
-    await vizzy.waitForLoadState('networkidle');
+    await vizzy.waitForTimeout(5000);
     await expect(bioOverLay.bioModal).not.toBeVisible();
     
     //check if submit button is disable
-    await jobUtils.checkIfSubmitButtonIsDisable(profile.submittedButton);
+    await jobUtils.checkIfSubmitButtonIsDisable(profile.submittedButton, true);
     
     //Skill
     await jobUtils.hoverAndClick(skills.hover, skills.add);
@@ -205,7 +204,7 @@ test('applying job', async ()=>{
     await profile.saveButton.click();
 
     //check if submit button is disable
-    await jobUtils.checkIfSubmitButtonIsDisable(profile.submittedButton);
+    await jobUtils.checkIfSubmitButtonIsDisable(profile.submittedButton, true);
 
     await customQA.hoverElement.hover();
     await customQA.answerButton.click();
@@ -213,7 +212,7 @@ test('applying job', async ()=>{
     await customQA.question1.answerButton.click();
     await customQA.answerField.fill('question 1 is answered');
     await profile.saveButton.click();
-    await vizzy.waitForLoadState('networkidle');
+    await vizzy.waitForLoadState('domcontentloaded');
 
     
     //image upload only
@@ -221,7 +220,7 @@ test('applying job', async ()=>{
     await customQA.question2.answerButton.click();
     await jobUtils.uploadingFile('image', customQA.addFile, profile.saveImage, data.fileType.image, vizzy, customQA.addURL, customQA.addButton);
     await profile.saveButton.click();
-    await vizzy.waitForLoadState('networkidle');
+    await vizzy.waitForLoadState('domcontentloaded');
 
     
     //mp3 upload only
@@ -229,7 +228,7 @@ test('applying job', async ()=>{
     await customQA.question3.answerButton.click();
     await jobUtils.uploadingFile('audio', customQA.addFile, profile.saveImage, data.fileType.audio, vizzy, customQA.addURL, customQA.addButton);
     await profile.saveButton.click();
-    await vizzy.waitForLoadState('networkidle');
+    await vizzy.waitForLoadState('domcontentloaded');
 
     
     //mp4 uplaod and video link
@@ -237,7 +236,7 @@ test('applying job', async ()=>{
     await customQA.question5.answerButton.click();
     await jobUtils.uploadingFile('video', customQA.addFile, profile.saveImage, data.fileType.video, vizzy, customQA.addURL, customQA.addButton);
     await profile.saveButton.click();
-    await vizzy.waitForLoadState('networkidle');
+    await vizzy.waitForLoadState('domcontentloaded');
 
     
     //portfolio only
@@ -245,10 +244,10 @@ test('applying job', async ()=>{
     await customQA.question4.answerButton.click();
     await jobUtils.uploadingFile('portfolio', customQA.addFile, profile.saveImage, data.fileType.portfolio, vizzy, customQA.addURL, customQA.addButton);
     await profile.saveButton.click();
-    await vizzy.waitForLoadState('networkidle'); 
+    await vizzy.waitForLoadState('domcontentloaded'); 
 
     //check if submit button is disable
-    await jobUtils.checkIfSubmitButtonIsDisable(profile.submittedButton);
+    await jobUtils.checkIfSubmitButtonIsDisable(profile.submittedButton, true);
 
     
     //psych
@@ -273,7 +272,7 @@ test('applying job', async ()=>{
     await vizzy.waitForLoadState('domcontentloaded');
 
     //check if submit button is disable
-    await jobUtils.checkIfSubmitButtonIsDisable(profile.submittedButton);
+    await jobUtils.checkIfSubmitButtonIsDisable(profile.submittedButton, true);
     
     //education
     await profile.addContent.click();
@@ -294,7 +293,7 @@ test('applying job', async ()=>{
     await expect(education.educationModal).not.toBeVisible({timeout: 10000});
 
     //check if submit button is disable
-    await jobUtils.checkIfSubmitButtonIsDisable(profile.submittedButton);
+    await jobUtils.checkIfSubmitButtonIsDisable(profile.submittedButton, true);
 
     //work
     await profile.addContent.click();
@@ -314,7 +313,7 @@ test('applying job', async ()=>{
     await expect(work.workModal).not.toBeVisible({timeout: 10000});
 
     //check if submit button is disable
-    await jobUtils.checkIfSubmitButtonIsDisable(profile.submittedButton);
+    await jobUtils.checkIfSubmitButtonIsDisable(profile.submittedButton, true);
 
     //project
     await profile.addContent.click();
@@ -330,7 +329,7 @@ test('applying job', async ()=>{
     await expect(project.modal).not.toBeVisible({timeout: 50000});
 
     //check if submit button is disable
-    await jobUtils.checkIfSubmitButtonIsDisable(profile.submittedButton);
+    await jobUtils.checkIfSubmitButtonIsDisable(profile.submittedButton, true);
 
     //media card
     await profile.addContent.click();
@@ -346,7 +345,7 @@ test('applying job', async ()=>{
     await expect(media.modal).not.toBeVisible({timeout: 50000});
 
     //check if submit button is disable
-    await jobUtils.checkIfSubmitButtonIsDisable(profile.submittedButton);
+    await jobUtils.checkIfSubmitButtonIsDisable(profile.submittedButton, true);
 
     //qa card
     await profile.addContent.click();
@@ -360,10 +359,14 @@ test('applying job', async ()=>{
     await qa.saveButton.click();
     await expect(qa.modal).not.toBeVisible({timeout: 50000});
 
+    //check if the submit button is enable
+    await jobUtils.checkIfSubmitButtonIsDisable(profile.submittedButton, false);
+
     //submit application
     await profile.submittedButton.click();
     await profile.confirmSubmit.click();
-    await vizzy.waitForLoadState('networkidle');
+    await vizzy.waitForLoadState('domcontentloaded');
     
+    //check for success modal
     await expect(profile.sucessModal).toBeVisible({timeout: 50000});
 });
