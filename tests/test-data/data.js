@@ -1,17 +1,20 @@
 'use strict';
-
 export const data = {
   accountStaging: {
     email: 'sounsony@gmail.com',
     password: '@Sony7727',
   },
   accountBeta: {
-    email: 'southparkpup@edny.net',
+    email: 'yuchhay.sam@nuformdigital.com',
     password: 'Yuchhaysam123@'
   },
   candidateAccount: {
     email: 'johnbrewmen14@indigobook.com',
     password: 'Yuchhaysam123@'
+  },
+  BOAccount:{
+    email : 'jaksmokqa@gmail.com',
+    password: 'Abc1234!'
   },
   pageTitle: {
     myProfileTitle: 'Profile | Vizzy',

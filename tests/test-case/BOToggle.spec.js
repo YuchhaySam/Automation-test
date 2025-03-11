@@ -1,6 +1,5 @@
 'use strict';
 import {test, expect} from '@playwright/test';
-import axios from 'axios';
 import { data } from '../test-data/data';
 import { backOffice } from '../locator/backOffice';
 import { testcase } from '../ulti-function/reusableTestCase';
@@ -36,8 +35,15 @@ test('BO video toggle', async () => {
   const businessRegister = backOffice.businessRegister;
   const businessNameLocator = await businessRegister.list.businessName(data.additionalInformation.businessName);
  
-  //Login process, need API
-
+  //Login process
+  await backOffice.login.emailField.fill(data.BOAccount.email);
+  await backOffice.login.passwordField.fill(data.BOAccount.password);
+  await backOffice.login.loginButton.click();
+  await BO.waitForselector(backOffice.login.verificationModal);
+  // the process pause, so we can enter the code manually
+  await BO.pause();
+  await backOffice.login.verifyButton.click();
+  
   //arrive on dashboard
   await expect(BO).toHaveTitle(data.pageTitle.backOffice);
   await businessRegister.container.click();

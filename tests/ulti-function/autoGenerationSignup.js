@@ -1,11 +1,11 @@
 export const autoGenerationSignup ={
   //first name
-  firstName : "Yuchhay",
+  firstName : "Chanra",
   
   //Last name
   generateLastName: function(){
     const randomNumber = Math.floor(Math.random() * 10000);
-    return `automate${randomNumber}`;
+    return `Nouy${randomNumber}`;
   },
 
   //email auto generation

@@ -106,31 +106,31 @@ export const settingLocator = async (page) => ({
       EDICopy: await page.getByText('Select which questions you'),
       EDIList: [
         {
-          dateOfBirth: await page.locator('li').filter({ hasText: 'Date of birth' }).locator('span')
+          dateOfBirth: await page.locator('li').filter({ hasText: 'Date of birth' }).locator('span').first()
         },
         {
-          ethnicity: await page.locator('li').filter({ hasText: 'Which of the following best describes your ethnicity?Response options' }).locator('span')
+          ethnicity: await page.locator('li').filter({ hasText: 'Which of the following best describes your ethnicity?Response options' }).locator('span').first()
         },
         {
-          gender: await page.locator('li').filter({ hasText: 'Which of the following genders do you identify as?Response options' }).locator('span')
+          gender: await page.locator('li').filter({ hasText: 'Which of the following genders do you identify as?Response options' }).locator('span').first()
         },
         {
-        sexualOrientatoin: await page.locator('li').filter({ hasText: 'Which of the following best describes your sexual orientation?Response options' }).locator('span')
+        sexualOrientatoin: await page.locator('li').filter({ hasText: 'Which of the following best describes your sexual orientation?Response options' }).locator('span').first()
         },
         {
-          disability: await page.locator('li').filter({ hasText: 'Do you consider yourself to' }).locator('span')
+          disability: await page.locator('li').filter({ hasText: 'Do you consider yourself to' }).locator('span').first()
         },
         {
-          neurodiverse: await page.locator('li').filter({ hasText: 'Do you have any of the' }).locator('span')
+          neurodiverse: await page.locator('li').filter({ hasText: 'Do you have any of the' }).locator('span').first()
         },
         {
-          religion: await page.locator('li').filter({ hasText: 'Which of these best describes' }).locator('span')
+          religion: await page.locator('li').filter({ hasText: 'Which of these best describes' }).locator('span').first()
         },
         {
-          school: await page.locator('li').filter({ hasText: 'What type of school did you' }).locator('span')
+          school: await page.locator('li').filter({ hasText: 'What type of school did you' }).locator('span').first()
         },
         {
-          meal: await page.locator('li').filter({ hasText: 'Were you eligible for free' }).locator('span')
+          meal: await page.locator('li').filter({ hasText: 'Were you eligible for free' }).locator('span').first()
         }
       ],
       reponseList: [
@@ -293,39 +293,39 @@ export const settingLocator = async (page) => ({
       checkBox: [
         {
           name: 'profile picture',
-          locator: await page.locator('li').filter({ hasText: 'Profile picture' }).locator('span')
+          locator: await page.locator('li').filter({ hasText: 'Profile picture' }).locator('span').first()
         },
         {
           name: 'name & pronouns',
-          locator: await page.locator('li').filter({ hasText: 'Name & pronouns' }).locator('span')
+          locator: await page.locator('li').filter({ hasText: 'Name & pronouns' }).locator('span').first()
         },
         {
           name: 'Bio',
-          locator: await page.locator('li').filter({ hasText: 'Bio location,' }).locator('span')
+          locator: await page.locator('li').filter({ hasText: 'Bio location,' }).locator('span').first()
         },
         {
           name: 'social media',
-          locator: await page.locator('li').filter({ hasText: 'Social media &' }).locator('span')
+          locator: await page.locator('li').filter({ hasText: 'Social media &' }).locator('span').first()
         },
         {
           name: 'psychometrics',
-          locator: await page.locator('li').filter({ hasText: 'Psychometrics' }).locator('span')
+          locator: await page.locator('li').filter({ hasText: 'Psychometrics' }).locator('span').first()
         },
         {
           name: 'custom question',
-          locator: await page.locator('li').filter({ hasText: 'Custom questions' }).locator('span')
+          locator: await page.locator('li').filter({ hasText: 'Custom questions' }).locator('span').first()
         },
         {
           name: 'education',
-          locator: await page.locator('li').filter({ hasText: 'Education' }).locator('span')
+          locator: await page.locator('li').filter({ hasText: 'Education' }).locator('span').first()
         },
         {
           name: 'work experience',
-          locator: await page.locator('li').filter({ hasText: 'Work experience' }).locator('span')
+          locator: await page.locator('li').filter({ hasText: 'Work experience' }).locator('span').first()
         },
         {
           name: 'projects',
-          locator: await page.locator('li').filter({ hasText: 'Projects' }).locator('span')
+          locator: await page.locator('li').filter({ hasText: 'Projects' }).locator('span').first()
         },
         {
           name: 'skills',
@@ -333,11 +333,11 @@ export const settingLocator = async (page) => ({
         },
         {
           name: 'media cards',
-          locator: await page.locator('li').filter({ hasText: 'Media cards' }).locator('span')
+          locator: await page.locator('li').filter({ hasText: 'Media cards' }).locator('span').first()
         },
         {
           name: 'Q&A',
-          locator: await page.locator('li').filter({ hasText: 'Q&As' }).locator('span')
+          locator: await page.locator('li').filter({ hasText: 'Q&As' }).locator('span').first()
         }
       ]
     },

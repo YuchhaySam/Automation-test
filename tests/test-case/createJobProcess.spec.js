@@ -36,8 +36,8 @@ test('Create a job process', async ({page}) => {
 
   //Login 
   await header.loginButton.click();
-  await signInField.emailField.fill(data.accountStaging.email);
-  await signInField.passwordField.fill(data.accountStaging.password);
+  await signInField.emailField.fill(data.accountBeta.email);
+  await signInField.passwordField.fill(data.accountBeta.password);
   await signInField.signInButton.click();
 
   // Wait for the page to load and verified the page
@@ -48,11 +48,12 @@ test('Create a job process', async ({page}) => {
   await setting.settingIcon.click();
   await setting.createAndManageJob.click();
   console.log('navigate to create & manage job');
+  await page.waitForLoadState('domcontentloaded');
 
   //create a new job
   await createAndManageJob.createNewJobButton.click();
   console.log('create a new job');
-  await page.waitForTimeout(2000);
+  await page.waitForTimeout(5000);
 
   // Job detail
   await expect(createAndManageJobPage.jobDetailCopy).toHaveText(data.copy.jobDetailCopy);

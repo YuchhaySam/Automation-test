@@ -2,7 +2,9 @@ export const backOffice = {
     login: {
       emailField : await page.getByLabel('Email *'),
       passwordField : await page.getByLabel('Password *'),
-      loginButton : await page.getByRole('button', { name: 'Sign in' })
+      loginButton : await page.getByRole('button', { name: 'Sign in' }),
+      verificationModal: await page.getByText('Enter Verification CodePlease'),
+      verifyButton: await page.getByRole('button', { name: 'Verify' }),
     },
     businessRegister : {
       container: await page.getByRole('button', { name: 'Businesses registered' }),

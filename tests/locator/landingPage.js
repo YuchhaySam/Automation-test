@@ -1,6 +1,3 @@
-// landingPage.mjs
-
-import { sign } from "crypto";
 // Exporting all locator functions
 export const headerLocators = async (page) => ({
   vizzyLogo: await page.locator('span.Nav_logo__au6jc'),
