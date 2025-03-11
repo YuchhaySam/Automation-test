@@ -179,6 +179,7 @@ export const jobUtils = {
   checkIfSubmitButtonIsDisable : async function(button, boonleanValue){
     const isButtonDisable = await button.isDisabled();
     expect(isButtonDisable).toBe(boonleanValue);
-  }
+  },
+  
   
 };

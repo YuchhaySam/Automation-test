@@ -2,23 +2,24 @@
 import {test, expect, chromium} from '@playwright/test';  
 import * as landingPage from '../locator/landingPage.js';
 import { data } from '../test-data/data.js';
-import * as setting from '../locator/settingLocator.js';
+import * as settingLocator from '../locator/settingLocator.js';
 import { jobUtils } from '../ulti-function/util.js';
 import dayjs from "dayjs";
 
 
 test('Create a job process', async ({page}) => {
-  page.setDefaultTimeout(100000);
   //variable needed for the locator
   const header = await landingPage.headerLocators(page);
+  const settingPage = await settingLocator.settingLocator(page);
   const signInField = await landingPage.signInFieldLocator(page);
-  const settingPage = await setting.settingLocator(page);
-  const createAndManageJobPage = await setting.createJobForm(page);
-  const createAndManageJob = await setting.createAndManageJob(page);
+  const setting = settingPage.setting;
+  const createAndManageJobPage = settingPage.createJobForm;
+  const createAndManageJob = settingPage.createAndManageJob;
   const EDIListLocator = createAndManageJobPage.EDI.EDIList;
   const responseList = createAndManageJobPage.EDI.reponseList;
   const answerRequirementToggle = createAndManageJobPage.customQA.answerRequrement.toggle;
   const customQA = createAndManageJobPage.customQA;
+
   //dayjs 
   let today = dayjs().format('DD/MM/YYYY');
   let tomorrow = dayjs().add(3, 'day').format('DD/MM/YYYY');
@@ -28,7 +29,7 @@ test('Create a job process', async ({page}) => {
   const code = jobUtils.codeGenerate();
 
   //navigate to Vizzy
-  page.goto(data.url.vizzyStaging);
+  page.goto(data.url.vizzyBeta);
   
   //allow cookie
   await header.cookieAllow.click();
@@ -44,8 +45,8 @@ test('Create a job process', async ({page}) => {
   await expect(page).toHaveTitle(data.pageTitle.myProfileTitle);
 
   //navigate to create & manage job
-  await settingPage.settingIcon.click();
-  await settingPage.createAndManageJob.click();
+  await setting.settingIcon.click();
+  await setting.createAndManageJob.click();
   console.log('navigate to create & manage job');
 
   //create a new job
@@ -74,18 +75,20 @@ test('Create a job process', async ({page}) => {
   console.log('Work model: Onsite');
   await createAndManageJobPage.expectedStartDate.fill(tomorrow);
   console.log('Expected start date:', tomorrow);
+  
   await createAndManageJobPage.country.fill('Cambodia');
   console.log('Country: Cambodia');
   await createAndManageJobPage.city.fill('Siem Reap');
   console.log('City: Siem Reap');
+  
   await createAndManageJobPage.currencyDropdown.currencyDropdownContainer.click();
-  await createAndManageJobPage.currencyDropdown.USD.click();
+  await createAndManageJobPage.currencyDropdown.EUR.click();
   console.log('Currency value: USD');
   await createAndManageJobPage.salaryTypeDropdown.salaryTypeDropdownContainer.click();
-  await createAndManageJobPage.salaryTypeDropdown.monthly.click();
+  await createAndManageJobPage.salaryTypeDropdown.hourly.click();
   console.log('Salary type: Monthly');
   await createAndManageJobPage.employmentType.empoymentTypeContainer.click();
-  await createAndManageJobPage.employmentType.fullTime.click();
+  await createAndManageJobPage.employmentType.partTime.click();
   console.log('Employment type: Full-time');
   await createAndManageJobPage.minimumSalary.fill('1000');
   console.log('Minimum salary: 1000');
@@ -122,13 +125,17 @@ test('Create a job process', async ({page}) => {
   //pre-requiste questions creation
   await createAndManageJobPage.prerequsiteAndEDITab.click();
   await expect(createAndManageJobPage.prerequisiteQuestion.prerequisteCopy).toHaveText(data.copy.prerequisteCopy);
+
   //add question with no multi answers
   await createAndManageJobPage.prerequisiteQuestion.addQuestionButton.click();
+
   // Verify if the toggle is enabled or disabled
   const isToggleEnabled = await createAndManageJobPage.prerequisiteQuestion.multipleQuestionToggle.isChecked();
   expect(isToggleEnabled).toBe(false); 
+
   await createAndManageJobPage.prerequisiteQuestion.questionField.fill('automation questions');
   await jobUtils.answerCreationLoop(createAndManageJobPage);
+
   await createAndManageJobPage.prerequisiteQuestion.saveQuestionButton.click();
   //add question with multi answers
   await createAndManageJobPage.prerequisiteQuestion.addQuestionButton.click();
@@ -218,8 +225,12 @@ test('Create a job process', async ({page}) => {
   await createAndManageJobPage.submissionRequirement.submissionTab.click();
   await expect (createAndManageJobPage.submissionRequirement.copy1).toHaveText(data.copy.submissionRequirement.copy1);
   await expect(createAndManageJobPage.submissionRequirement.copy2).toHaveText(data.copy.submissionRequirement.copy2);
+  //check if the 4 default toggles are on
   await jobUtils.checkTogglesStatusOn(createAndManageJobPage.submissionRequirement.toggle);
+
+  //check if the remaining toggles are off
   await jobUtils.checkTogglesStatus(createAndManageJobPage.submissionRequirement.toggleForMedia);
+
   await createAndManageJobPage.saveButton.click();
   await jobUtils.checkForSuccessMessage(createAndManageJobPage.sucessMessage);
   await jobUtils.checkButtonDisabled(createAndManageJobPage.saveButton);
@@ -227,7 +238,7 @@ test('Create a job process', async ({page}) => {
   
   //recruiter access
   await createAndManageJobPage.screeningTab.click();
-  /*
+  
   await expect(createAndManageJobPage.recruiterAcess.copy1).toHaveText(data.copy.recruiterAcess.copy1);
   await expect(createAndManageJobPage.recruiterAcess.copy2).toHaveText(data.copy.recruiterAcess.copy2);
   await createAndManageJobPage.recruiterAcess.selectAllButton.click();
@@ -235,7 +246,7 @@ test('Create a job process', async ({page}) => {
   await createAndManageJobPage.recruiterAcess.confirmYes.click();
   await createAndManageJobPage.saveButton.click();
   await jobUtils.checkForSuccessMessage(createAndManageJobPage.sucessMessage);
-  await jobUtils.checkButtonDisabled(createAndManageJobPage.saveButton);*/
+  await jobUtils.checkButtonDisabled(createAndManageJobPage.saveButton);
 
   //anon hiring
   await createAndManageJobPage.anonHiring.anonHiringTab.click();

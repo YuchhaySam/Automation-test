@@ -2,8 +2,8 @@
 
 export const data = {
   accountStaging: {
-    email: 'vension8@mailinator.com',
-    password: 'Cavemancoffee123@',
+    email: 'sounsony@gmail.com',
+    password: '@Sony7727',
   },
   accountBeta: {
     email: 'southparkpup@edny.net',
@@ -16,7 +16,9 @@ export const data = {
   pageTitle: {
     myProfileTitle: 'Profile | Vizzy',
     settingTitle: 'Settings | Vizzy',
-    myApplication: 'My Applications | Vizzy'
+    myApplication: 'My Applications | Vizzy',
+    BODashBoard: 'Vizzy | Dashboard',
+    businessDetail: 'Vizzy | Business Detail'
   },
   copy: {
     jobDetailCopy: "This section outlines the minimum mandatory requirements for creating a job. Please complete the required fields, then click 'Save' and 'Publish'. This information will be visible to candidates.",
@@ -66,7 +68,9 @@ export const data = {
     businessURL: 'https://teamfighttactics.leagueoflegends.com/en-us/',
     mailinator: 'https://www.mailinator.com/',
     mailTM: 'https://mail.tm/en/',
-    new: 'www.nytimes.com'
+    new: 'www.nytimes.com',
+    BOStaging: 'admin.staging.vizzy.com',
+    BOBeta: 'admin.beta.vizzy.com',
   },
   locatorData: {
     ethnicity: {
@@ -202,5 +206,8 @@ export const data = {
   media:{
     headline: 'Book of a god',
     description: 'This is an automated description'
+  },
+  additionalInformation:{
+    businessName: 'Cave Men Cafes'
   }
 };
