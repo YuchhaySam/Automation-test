@@ -12,10 +12,12 @@ export const profile = async (page) => ({
     submittedButton: await page.getByRole('navigation').getByRole('button', { name: 'Submit' }),
     confirmSubmit: await page.locator('#modal-lightbox').getByRole('button', { name: 'Submit' }),
     sucessModal: await page.getByText('Your application has been submitted successfully!Please keep an eye on your'),
+    discardButton: await page.getByRole('button', { name: 'Discard' }),
     bio:{
         hoverElement: await page.getByText('RequiredStart Your'),
         editBioButton : await page.getByRole('button', { name: 'Start Your Profile' }),
         addButton: await page.getByRole('button', { name: 'Add' }),
+        bioModal: await page.getByText('Your bioProfile photoProfile'),
         bioOverLay: {
             bioModal : await page.getByText('Your bioProfile photoProfile'),
             profilePhoto: {
@@ -243,5 +245,10 @@ export const profile = async (page) => ({
         },
         answer: await page.locator(`//textarea[@placeholder='Enter text…']`),
         saveButton: await page.getByRole('button', { name: 'Save' })
+    },
+    stringSelector:{
+        welcomeHeader: "h1:has-text('Welcome! 👋 Let\\'s get YOU')",
+        bespokenInputLabel: ":has-text('Add your bespoke URL:')",
+        
     }
 });

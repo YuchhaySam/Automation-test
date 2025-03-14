@@ -9,9 +9,9 @@ export const headerLocators = async (page) => ({
 });
 
 export const signInFieldLocator = async (page) => ({
-  emailField: await page.locator(`//input[@name='email']`),
-  passwordField: await page.locator(`//input[@name='password']`),
-  signInButton: await page.locator(`//button[@type='submit']`),
+  emailField: await page.getByLabel('Email'),
+  passwordField: await page.getByLabel('Password'),
+  signInButton: await page.getByRole('button', { name: 'Sign in' }),
   signInButtonOnModal: await page.getByRole('link', { name: 'Sign in' })
 });
 
@@ -23,7 +23,8 @@ export const signUpFieldsLocators = async (page) => ({
   registerButton: await page.locator(`//button[@type='submit']`),
   verificationCodeInputField : await page.locator(`//input[@placeholder='Enter 6 digit one-time passcode']`),
   continueButton: await page.locator(`//button[normalize-space()='Continue']`),
-  bespokenInputField : await page.locator(`//div[@class='FormFields_inputContainer__EA8IU']//input`)
+  bespokenInputField : await page.locator(`//div[@class='FormFields_inputContainer__EA8IU']//input`),
+  verificationModalSelectors : ":has-text('Please verify your emailEnter')"
 });
 
 export const mailinatorLocators = async (page) => {

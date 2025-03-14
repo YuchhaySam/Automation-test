@@ -1,16 +1,16 @@
 'use strict';
 export const data = {
   accountStaging: {
-    email: 'sounsony@gmail.com',
-    password: '@Sony7727',
+    email: 'vension8@mailinator.com',
+    password: 'Cavemancoffee123@',
   },
   accountBeta: {
     email: 'yuchhay.sam@nuformdigital.com',
     password: 'Yuchhaysam123@'
   },
   candidateAccount: {
-    email: 'johnbrewmen14@indigobook.com',
-    password: 'Yuchhaysam123@'
+    email: '27unlikely@edny.net',
+    password: '@Unlikely2025!'
   },
   BOAccount:{
     email : 'jaksmokqa@gmail.com',
@@ -60,8 +60,8 @@ export const data = {
     hideCheckModalCopy: `This content is currently hidden on your public profile but it is required for this application. It will continue to be hidden on your public profile.`
   },
   url: {
-    jobSpecificURLStaging: 'https://staging.vizzy.com/jobs/@Cavemans/c/cjjbcfz',
-    jobSpecificURLBeta: 'https://beta.vizzy.com/jobs/@demoPinpoint/c/g5vsfhx',
+    jobSpecificURLStaging: 'https://staging.vizzy.com/jobs/@cavemans/c/sm4dp43',
+    jobSpecificURLBeta: 'https://beta.vizzy.com/jobs/@Hey/c/j6mours',
     vizzyStaging: 'https://staging.vizzy.com/',
     vizzyBeta: 'https://beta.vizzy.com/',
     youtubeURL1: 'https://www.youtube.com/watch?v=GPZ2hPn9rEQ',
@@ -72,8 +72,8 @@ export const data = {
     mailinator: 'https://www.mailinator.com/',
     mailTM: 'https://mail.tm/en/',
     new: 'www.nytimes.com',
-    BOStaging: 'admin.staging.vizzy.com',
-    BOBeta: 'admin.beta.vizzy.com',
+    BOStaging: 'https://admin.staging.vizzy.com/',
+    BOBeta: 'https://admin.beta.vizzy.com/',
   },
   locatorData: {
     ethnicity: {

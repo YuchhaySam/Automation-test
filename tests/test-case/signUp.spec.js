@@ -24,9 +24,7 @@ test('Sign up page', async () => {
   await vizzy.goto('https://staging.vizzy.com/');
   await header.cookieAllow.click();
   await header.signUpButton.click();
-
-
-  await testcase.signUpStaging(signUpField, autoGeneration, mailinator, mailinatorField, email, password, lastName);
+  await testcase.signUpStaging(signUpField, autoGeneration, vizzy, mailinator, mailinatorField, email, password, lastName);
 
   // Expect to see the bespoke input field
   await expect(signUpField.bespokenInputField).toBeVisible();

@@ -29,15 +29,15 @@ test('Create a job process', async ({page}) => {
   const code = jobUtils.codeGenerate();
 
   //navigate to Vizzy
-  page.goto(data.url.vizzyBeta);
+  page.goto(data.url.vizzyStaging);
   
   //allow cookie
   await header.cookieAllow.click();
 
   //Login 
   await header.loginButton.click();
-  await signInField.emailField.fill(data.accountBeta.email);
-  await signInField.passwordField.fill(data.accountBeta.password);
+  await signInField.emailField.fill(data.accountStaging.email);
+  await signInField.passwordField.fill(data.accountStaging.password);
   await signInField.signInButton.click();
 
   // Wait for the page to load and verified the page
@@ -53,7 +53,7 @@ test('Create a job process', async ({page}) => {
   //create a new job
   await createAndManageJob.createNewJobButton.click();
   console.log('create a new job');
-  await page.waitForTimeout(5000);
+  await page.waitForSelector(createAndManageJobPage.jobDetailCopySelector, {timeout: 15000});
 
   // Job detail
   await expect(createAndManageJobPage.jobDetailCopy).toHaveText(data.copy.jobDetailCopy);
@@ -106,7 +106,7 @@ test('Create a job process', async ({page}) => {
   //check if the button is disable after save
   await jobUtils.checkButtonDisabled(createAndManageJobPage.saveButton);
 
-  await page.waitForTimeout(2000);
+  await page.waitForSelector(createAndManageJobPage.groupsJob.editStatus, {timeout: 15000});
 
   //create a new group
   await createAndManageJobPage.groupsJob.groupJobTab.click();
@@ -195,15 +195,14 @@ test('Create a job process', async ({page}) => {
   //customQ&A
   await createAndManageJobPage.candidateProfileTab.click();
   await expect(createAndManageJobPage.customQA.customQACopy).toHaveText(data.copy.customQA);
-  await page.waitForTimeout(2000);
   //add a prefix 1-5
   
   for (let i = 1; i <= 5; i++) {
-    await jobUtils.addingPrefixQuestion(customQA.customQAContainer, customQA.customQADropdown[`preDefindQuestion${i}`]);
+    await jobUtils.addingPrefixQuestion(customQA.customQAContainer, customQA.customQADropdown[`preDefindQuestion${i}`], customQA.customQADropdown[`selector${i}`], page);
   }
   //scroll down slightly
   await page.evaluate(() => {
-    window.scrollBy(0, 200);
+    window.scrollBy(0, 250);
   });
 
 
@@ -270,7 +269,6 @@ test('Create a job process', async ({page}) => {
   await createAndManageJobPage.publishButton.click();
   await createAndManageJobPage.confirmPublish.click();
   await expect(createAndManageJobPage.publishedMessage).toBeVisible();
-  await page.waitForTimeout(3000);
+  await page.waitForSelector(createAndManageJob.h1Selector, {timeout: 15000});
   await expect(page).toHaveTitle(data.pageTitle.settingTitle);
-  
 });

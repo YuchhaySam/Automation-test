@@ -17,7 +17,8 @@ export const settingLocator = async (page) => ({
     logOut: await page.locator(`//aside[@class='Sidebar_sidebar__359Vd SettingsLayout_sidebar__IM3iT']//a[normalize-space()='Log out']`)
   },
   createAndManageJob : {
-    createNewJobButton : await page.locator(`//a[@class='Button_button__SbxBC Button_variantPrimaryLightBackground___T_v_ Button_borderRegular__irCcT Button_sizeMedium__J0mM8']`)
+    createNewJobButton : await page.locator(`//a[@class='Button_button__SbxBC Button_variantPrimaryLightBackground___T_v_ Button_borderRegular__irCcT Button_sizeMedium__J0mM8']`),
+    h1Selector : "h1:has-text('Create & manage jobs')"
   },
   createJobForm : {
     //successMessage
@@ -26,6 +27,7 @@ export const settingLocator = async (page) => ({
     saveButton: await page.getByRole('button', { name: 'Save' }),
     //job detail
     jobDetailCopy: await page.getByText('This section outlines the'),
+    jobDetailCopySelector: 'text=This section outlines the',
     jobDetailSaveButton: await page.getByRole('button', { name: 'Save' }),
     jobTitle :  await page.getByPlaceholder('New job'),
     jobCode :await page.getByLabel('Code *Required for job URL'),
@@ -34,22 +36,21 @@ export const settingLocator = async (page) => ({
     timeZoneDefault: await page.locator(`//input[@placeholder='Select']`),
     applicationType: {
       dropdownContainer :  page.locator('label').filter({ hasText: 'Application type *' }).getByLabel('dropdown indicator'),
-      internalOnly : await page.getByLabel('Internal', { exact: true }),
-      externalOnly: await page.getByLabel('External', { exact: true }),
-      both: await page.getByLabel('Both', { exact: true })
+      internalOnly : await page.getByLabel('INTERNAL', { exact: true }),
+      externalOnly: await page.getByLabel('EXTERNAL', { exact: true }),
+      both: await page.getByLabel('BOTH', { exact: true })
     },
     jobDescription: await page.getByPlaceholder('Add a description for'),
     requirement : await page.getByPlaceholder('Add requirements for the role'),
     workModel: {
-      onsite: await page.locator('label').filter({ hasText: 'Onsite' }),
-      hybrid:  page.locator('label').filter({ hasText: 'Hybrid' }).locator('span').first(),
-      remote: await page.locator('label').filter({ hasText: 'Remote' }).locator('span').first()
+      onsite: await page.locator('label').filter({ hasText: 'ONSITE' }),
+      hybrid:  page.locator('label').filter({ hasText: 'HYBRID' }).locator('span').first(),
+      remote: await page.locator('label').filter({ hasText: 'REMOTE' }).locator('span').first()
     },
     expectedStartDate: await page.getByLabel('Expected start date'),
     country: await page.getByLabel('Country *'),
     city : await page.getByLabel('City'),
 
-    //currency value: USD, EUR, GBP, JPY, CAD
     currencyDropdown: {
       currencyDropdownContainer: await page.locator('label').filter({ hasText: 'CurrencySelectUSDEURGBPJPYCADSelect' }).getByLabel('dropdown indicator'),
       USD: await page.getByLabel('USD', { exact: true }),
@@ -62,10 +63,10 @@ export const settingLocator = async (page) => ({
     //salary value: HOURLY, DAILY, MONTHLY, YEARLY
     salaryTypeDropdown: {
       salaryTypeDropdownContainer: await page.locator('label').filter({ hasText: 'Salary typeSelectHourlyDailyMonthlyAnnualSelect' }).getByLabel('dropdown indicator'),
-      hourly: await page.getByLabel('Hourly', { exact: true }),
-      daily: await page.getByLabel('Daily', { exact: true }),
-      monthly: await page.getByLabel('Monthly', { exact: true }),
-      yearly: await page.getByLabel('Yearly')
+      hourly: await page.getByLabel('HOURLY', { exact: true }),
+      daily: await page.getByLabel('DAILY', { exact: true }),
+      monthly: await page.getByLabel('MONTHLY', { exact: true }),
+      yearly: await page.getByLabel('YEARLY')
     },  
     minimumSalary: await page.locator(`//input[@name='minimumSalary']`),
     maximumSalary: await page.locator(`//input[@name='maximumSalary']`),
@@ -73,14 +74,15 @@ export const settingLocator = async (page) => ({
     // Employment Type value: FULL_TIME, PART_TIME, CONTRACT, INTERNSHIP, FREELANCE
     employmentType : {
       empoymentTypeContainer: await page.locator('label').filter({ hasText: 'Employment type *' }).getByLabel('dropdown indicator'),
-      internship :await page.getByLabel('Internship', { exact: true }),
-      fullTime : await page.getByLabel('FullTime'),
-      partTime: await page.getByLabel('PartTime'),
+      internship :await page.getByLabel('INTERNSHIP', { exact: true }),
+      fullTime : await page.getByLabel('FULL_TIME'),
+      partTime: await page.getByLabel('PART_TIME'),
       contract: await page.getByLabel('Contract', { exact: true }),
       freelance: await page.getByLabel('Freelance', { exact: true })
     },
     //Group jobs
     groupsJob: {
+      editStatus: `:has-text('⚠️ This job is not live; it')`,
       groupJobCopy: await page.getByText('Group jobs by campaign,'),
       groupJobTab: await page.getByRole('button', { name: 'Group jobs' }),
       groupJobDropDownContainer: await page.getByLabel('Select groupNo group'),
@@ -186,7 +188,12 @@ export const settingLocator = async (page) => ({
         preDefindQuestion2: await page.getByText('Who inspires you and why?'),
         preDefindQuestion3: await page.getByText('What sustainable initiative'),
         preDefindQuestion4: await page.getByText('What new technology or'),
-        preDefindQuestion5: await page.getByText('What trend do you think will')
+        preDefindQuestion5: await page.getByText('What trend do you think will'),
+        selector1: ':has-text("Why would you like to join")',
+        selector2: ':has-text("Who inspires you and why?")',
+        selector3: ':has-text("What sustainable initiative")',
+        selector4: ':has-text("What new technology or")', 
+        selector5: ':has-text("What trend do you think will")'
       },
       kebabMenu: function(page, number) {
         return page.locator(`div:nth-child(${number}) > .Card_container__zFPvi > .Card_card__HRJrl > .Card_cardHeader__VU_0G > .TheEditQuestionnaireDropdown_question__UBbKm > .ContextMenu_contextMenu__QOxr7 > .ContextMenu_iconMore__SaVsX`);

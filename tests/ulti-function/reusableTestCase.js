@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test"
 
 export const testcase = {
-    signUpStaging : async function(signUpField, autoGeneration, mailinator, mailinatorField, email, password, lastName) {
+    signUpStaging : async function(signUpField, autoGeneration, vizzy, mailinator, mailinatorField, email, password, lastName) {
 
         await signUpField.firstNameField.fill(autoGeneration.firstName);
         console.log('First name filled:', autoGeneration.firstName);
@@ -16,6 +16,9 @@ export const testcase = {
         console.log('Password filled:', password);
       
         await signUpField.registerButton.click();
+
+        await vizzy.waitForSelector(signUpField.verificationModalSelectors, {timeout: 15000});
+        console.log('Verification modal is visible');
       
         // Navigate to Mailinator and retrieve the verification code
         console.log('Navigating to Mailinator...');

@@ -1,10 +1,11 @@
-export const backOffice = {
+export const backOffice = async (page) => ({
     login: {
       emailField : await page.getByLabel('Email *'),
       passwordField : await page.getByLabel('Password *'),
       loginButton : await page.getByRole('button', { name: 'Sign in' }),
-      verificationModal: await page.getByText('Enter Verification CodePlease'),
+      verificationModal: `//h1[normalize-space()='Enter Verification Code']`,
       verifyButton: await page.getByRole('button', { name: 'Verify' }),
+      dashBoardLogo: `//span[@class='Logo_logo__4TSTT Layout_vizzy__F4BDe']//*[name()='svg']`,
     },
     businessRegister : {
       container: await page.getByRole('button', { name: 'Businesses registered' }),
@@ -28,12 +29,12 @@ export const backOffice = {
           //customize invite team email
           //community
           community: {
-            customVideoToggle: await page.locator('label:nth-child(6) > .Toggle_toggleBoolean__B_Pa8')
+            customVideoToggle: await page.locator(`//*[@id="__next"]/div/main/div/div[4]/div[2]/label[5]/input`)
           },
           hiring: {
-            customVideoToggle: await page.locator('div:nth-child(14) > .FormFields_label__B7Uum > .Toggle_toggleBoolean__B_Pa8')
+            customVideoToggle: await page.locator(`//*[@id="__next"]/div/main/div/div[4]/div[2]/div[6]/label/input`)
           }
         }
       }
     }
-}
+});

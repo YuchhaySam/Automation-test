@@ -111,7 +111,8 @@ export const jobUtils = {
       response.request().postData().includes(query);
     });
   },
-  addingPrefixQuestion : async function (container, question){
+  addingPrefixQuestion : async function (container, question, selector, page){
+    await page.waitForSelector(selector);
     await container.click();
     await question.click(); 
   },

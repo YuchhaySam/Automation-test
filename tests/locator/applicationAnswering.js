@@ -6,6 +6,7 @@ export const applicationAnswering = async (page) =>({
     nextButton: await page.getByRole('button', { name: 'Next' }),
     continueButton: await page.getByRole('button', { name: 'Continue' }),
     skipButton: await page.getByRole('button', { name: 'Skip video' }),
+    myApplicationHeader : `"h1:has-text('My applications')"`,
     answer:{
         question1: async (answer) => {
             const locator = await page.locator('span').filter({ hasText: `${answer}` }).first();

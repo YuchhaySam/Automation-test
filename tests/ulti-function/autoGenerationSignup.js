@@ -26,6 +26,9 @@ export const autoGenerationSignup ={
     // Ensure at least one number
     password += characters.charAt(52 + Math.floor(Math.random() * 10)); 
 
+    //at least one lower case
+    password += characters.charAt(26 + Math.floor(Math.random() * 26));
+
     // Ensure at least one special character
     password += specialCharacters.charAt(Math.floor(Math.random() * specialCharacters.length)); 
     
